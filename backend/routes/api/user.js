@@ -2,9 +2,11 @@
 let router = require("express").Router();
 let User = require("../../models/User");
 let Product = require("../../models/Product");
+let Order = require("../../models/Order");
 const keys = require("../../config/key");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
@@ -135,6 +137,8 @@ router.get("/get_users", function(req, res) {
   });
 });
 
+// Vendor Endpoints
+
 router.post("/:vid/add_item", function(req, res) {
   let vid = req.params.vid;
   // console.log(vid);
@@ -158,11 +162,11 @@ router.post("/:vid/add_item", function(req, res) {
 
 router.get("/:vid/get_items", function(req, res) {
   let vid = req.params.vid;
-  Product.find({ userid: vid }, function(err, users) {
+  Product.find({ userid: vid }, function(err, prod) {
     if (err) {
       console.log(err);
     } else {
-      res.json(users);
+      res.json(prod);
     }
   });
 });
@@ -171,23 +175,90 @@ router.post("/dispatch_item", function(req, res) {
   let vid = req.params.vid;
   Product.findByIdAndUpdate(req.body.pid, { status: "Dispatched" }, function(
     err,
-    users
+    prod
   ) {
     if (err) {
       console.log(err);
     } else {
-      res.json(users);
+      res.json(prod);
     }
   });
 });
 
 router.get("/:vid/get_ready", function(req, res) {
   let vid = req.params.vid;
-  Product.find({ userid: vid, status: "Ready" }, function(err, users) {
+  Product.find({ userid: vid, status: "Ready" }, function(err, prod) {
     if (err) {
       console.log(err);
     } else {
+      res.json(prod);
+    }
+  });
+});
+
+router.get("/:vid/get_dispatched", function(req, res) {
+  let vid = req.params.vid;
+  Product.find({ userid: vid, status: "Dispatched" }, function(err, prod) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(prod);
+    }
+  });
+});
+
+router.get("/profile/:vid", function(req, res) {
+  let vid = req.params.vid;
+  User.find({ userid: vid, type: 1 }, function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      users.password = "";
       res.json(users);
+    }
+  });
+});
+
+// Customer Endpoints
+
+// Product.plugin(mongoose_fuzzy_searching, { fields: ["productname"] });
+router.get("/search", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  Product.find({ productname: req.body.productname }, function(err, prod) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(prod);
+    }
+  });
+});
+
+router.post("/place_order", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  let ord = new Order({
+    productid: req.body.pid,
+    userid: req.body.vid,
+    rated: false,
+    reviewed: false,
+    quantity: req.body.quantity
+  });
+  ord
+    .save()
+    .then(ord => {
+      res.status(200).json({ Order: "Order placed successfully" });
+    })
+    .catch(err => {
+      res.status(400).send("Error");
+    });
+});
+
+router.get("/order_stats", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  Order.find({ userid: req.body.vid }, function(err, ord) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(ord);
     }
   });
 });
