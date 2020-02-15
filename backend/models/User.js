@@ -19,6 +19,9 @@ let User = new mongoose.Schema({
   rating: {
     type: Number
   },
+  num_rating: {
+    type: Number
+  },
   reviews: {
     type: [String]
   }

@@ -37,7 +37,8 @@ router.post("/register", (req, res) => {
         password: req.body.password,
         user_type: req.body.user_type,
         rating: 0.0,
-        review: []
+        review: [],
+        num_rating = 0
       }); // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -252,13 +253,94 @@ router.post("/place_order", function(req, res) {
     });
 });
 
-router.get("/order_stats", function(req, res) {
+router.get("/:vid/order_stats", function(req, res) {
   // Product.mongoose_fuzzy_searching();
-  Order.find({ userid: req.body.vid }, function(err, ord) {
+  Order.find({ userid: req.params.vid }, function(err, ord) {
     if (err) {
       console.log(err);
     } else {
       res.json(ord);
+    }
+  });
+});
+
+router.post("/edit_order", function(req, res) {
+  Order.findByIdAndUpdate(
+    req.body.oid,
+    {
+      productid: req.body.pid,
+      userid: req.body.vid,
+      rated: false,
+      reviewed: false,
+      quantity: req.body.quantity
+    },
+    function(err, prod) {
+      if (err) {
+        res.status(400).send("Error");
+      } else {
+        res.status(200).json({ Order: "Order edited successfully" });
+      }
+    }
+  );
+});
+
+//TODO: fix review and rate
+
+router.post("/rate", function(req, res) {
+  Order.findById(req.body.oid, function(err, ord) {
+    if (err) {
+      res.status(400).send("Error");
+    } else {
+      Product.findById(ord.productid, function(err, prod) {
+        if (err) {
+          res.status(400).send("Error");
+        } else {
+          User.findByIdAndUpdate(
+            prod.userid,
+            {
+              num_rating: num_rating + 1,
+              rating: (rating + req.body.rating) / num_rating
+            },
+            function(err, user) {
+              if (err) {
+                res.status(400).send("Error");
+              } else {
+                Order.findByIdAndUpdate(req.body.oid, { rated: true });
+                res.status(200).send("Successfully rated");
+              }
+            }
+          );
+        }
+      });
+    }
+  });
+});
+
+router.post("/review", function(req, res) {
+  Order.findById(req.body.oid, function(err, ord) {
+    if (err) {
+      res.status(400).send("Error");
+    } else {
+      Product.findById(ord.productid, function(err, prod) {
+        if (err) {
+          res.status(400).send("Error");
+        } else {
+          User.findByIdAndUpdate(
+            prod.userid,
+            {
+              reviews: reviews.push(req.body.review)
+            },
+            function(err, user) {
+              if (err) {
+                res.status(400).send("Error");
+              } else {
+                Order.findByIdAndUpdate(req.body.oid, { reviewed: true });
+                res.status(200).send("Successfully reviewed");
+              }
+            }
+          );
+        }
+      });
     }
   });
 });
