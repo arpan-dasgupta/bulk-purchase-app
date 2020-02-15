@@ -7,13 +7,18 @@ const app = express();
 const PORT = 4000;
 const userRoutes = express.Router();
 
-let User = require("./models/user");
-let apiRoutes = require("./routes/api/vendor");
+let User = require("./models/User");
+let apiRoutes = require("./routes/api/user");
+let passport = require("./config/passport");
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/vendor/", apiRoutes);
+app.use("/user/", apiRoutes);
+
+// // Passport middleware
+app.use(passport.initialize()); // Passport config
+require("./config/passport")(passport);
 
 // Connection to mongodb
 mongoose.connect("mongodb://127.0.0.1:27017/users", { useNewUrlParser: true });

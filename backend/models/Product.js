@@ -16,7 +16,7 @@ let Product = new mongoose.Schema({
   status: {
     type: String
   },
-  vendorid: {
+  userid: {
     type: String
   },
   image: {

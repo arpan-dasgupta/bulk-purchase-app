@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 
-let Vendor = new mongoose.Schema({
+let User = new mongoose.Schema({
   username: {
     type: String,
     required: true
   },
   password: {
     type: String,
+    required: true
+  },
+  user_type: {
+    type: Number,
     required: true
   },
   email: {
@@ -20,4 +24,4 @@ let Vendor = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Vendor", Vendor);
+module.exports = mongoose.model("User", User);
