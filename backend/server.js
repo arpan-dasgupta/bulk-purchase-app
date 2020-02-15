@@ -9,7 +9,11 @@ const userRoutes = express.Router();
 
 let User = require("./models/User");
 let apiRoutes = require("./routes/api/user");
-let passport = require("./config/passport");
+const passport = require("passport");
+
+// Passport middleware
+app.use(passport.initialize()); // Passport config
+require("./config/passport")(passport);
 
 app.use(cors());
 app.use(bodyParser.json());
