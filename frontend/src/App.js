@@ -22,8 +22,13 @@ function App() {
                 </Link>
               </li>
               <li className="navbar-item">
-                <Link to="/create" className="nav-link">
-                  Create User
+                <Link to="/register" className="nav-link">
+                  Register
+                </Link>
+              </li>
+              <li className="navbar-item">
+                <Link to="/login" className="nav-link">
+                  Login
                 </Link>
               </li>
             </ul>
@@ -32,7 +37,7 @@ function App() {
 
         <br />
         <Route path="/" exact component={UsersList} />
-        <Route path="/create" component={Login} />
+        <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
       </div>
     </Router>

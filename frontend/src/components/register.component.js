@@ -70,6 +70,7 @@ export default class Register extends Component {
       .then(res => {
         // console.log(res);
         console.log(res.data);
+        window.location.href = "/login";
       })
       .catch(res => {
         console.log(res);

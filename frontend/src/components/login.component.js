@@ -10,39 +10,55 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      username: "",
-      email: ""
+      email: "",
+      password: ""
     };
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onChangeUsername(event) {
-    this.setState({ username: event.target.value });
+    // this.state = { value: "coconut" };
   }
 
   onChangeEmail(event) {
     this.setState({ email: event.target.value });
   }
 
+  onChangePassword(event) {
+    this.setState({ password: event.target.value });
+  }
+
   onSubmit(e) {
+    console.log(this.state);
+    // var v;
+    // if (!Boolean(this.state.switch1)) v = "1";
+    // else v = "2";
+    // console.log(v);
     e.preventDefault();
 
     const newUser = {
-      username: this.state.username,
-      email: this.state.email
+      email: this.state.email,
+      password: this.state.password
     };
 
     axios
-      .post("http://localhost:4000/add", newUser)
-      .then(res => console.log(res.data));
+      .post("http://localhost:4000/user/login", newUser)
+      .then(res => {
+        // console.log(res);
+        console.log(res.data);
+        console.log("yo");
 
-    this.setState({
-      username: "",
-      email: ""
-    });
+        // window.location.href = "/user/login";
+      })
+      .catch(res => {
+        console.log(res);
+        console.log("no");
+      });
+
+    // this.setState({
+    //   username: "",
+    //   email: ""
+    // });
   }
 
   render() {
@@ -51,8 +67,8 @@ export default class Login extends Component {
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
-              <form>
-                <p className="h5 text-center mb-4">Log In</p>
+              <form onSubmit={this.onSubmit}>
+                <p className="h5 text-center mb-4">Sign up</p>
                 <div className="grey-text">
                   <MDBInput
                     label="Your email"
@@ -60,19 +76,25 @@ export default class Login extends Component {
                     group
                     type="email"
                     validate
-                    error="wrong"
-                    success="right"
+                    // error="wrong"
+                    // success="right"
+                    value={this.state.email}
+                    onChange={this.onChangeEmail}
                   />
                   <MDBInput
-                    label="Your password"
+                    label="Password"
                     icon="lock"
                     group
                     type="password"
                     validate
+                    value={this.state.password}
+                    onChange={this.onChangePassword}
                   />
                 </div>
                 <div className="text-center">
-                  <MDBBtn color="primary">Login</MDBBtn>
+                  <MDBBtn color="primary" type="submit">
+                    Login
+                  </MDBBtn>
                 </div>
               </form>
             </MDBCol>
