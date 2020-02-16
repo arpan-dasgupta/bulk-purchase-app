@@ -52,31 +52,13 @@ export default class Login extends Component {
           <MDBRow>
             <MDBCol md="6">
               <form>
-                <p className="h5 text-center mb-4">Sign up</p>
+                <p className="h5 text-center mb-4">Log In</p>
                 <div className="grey-text">
-                  <MDBInput
-                    label="Your name"
-                    icon="user"
-                    group
-                    type="text"
-                    validate
-                    error="wrong"
-                    success="right"
-                  />
                   <MDBInput
                     label="Your email"
                     icon="envelope"
                     group
                     type="email"
-                    validate
-                    error="wrong"
-                    success="right"
-                  />
-                  <MDBInput
-                    label="Confirm your email"
-                    icon="exclamation-triangle"
-                    group
-                    type="text"
                     validate
                     error="wrong"
                     success="right"
@@ -90,7 +72,7 @@ export default class Login extends Component {
                   />
                 </div>
                 <div className="text-center">
-                  <MDBBtn color="primary">Register</MDBBtn>
+                  <MDBBtn color="primary">Login</MDBBtn>
                 </div>
               </form>
             </MDBCol>
