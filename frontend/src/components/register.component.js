@@ -1,16 +1,6 @@
 import React, { Component } from "react";
 // import { Button, Form } from "react-bootstrap";
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBBtn,
-  MDBInput,
-  MDBDropdownItem,
-  MDBDropdown,
-  MDBDropdownMenu,
-  MDBDropdownToggle
-} from "mdbreact";
+import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from "mdbreact";
 import axios from "axios";
 // import "../Login.css";
 import "font-awesome/css/font-awesome.min.css";
@@ -24,14 +14,14 @@ export default class Register extends Component {
       email: "",
       password: "",
       password2: "",
-      type: 1
+      switch1: true
     };
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangePassword2 = this.onChangePassword2.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.handleSwitchChange = this.handleSwitchChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     // this.state = { value: "coconut" };
   }
@@ -52,27 +42,43 @@ export default class Register extends Component {
     this.setState({ password2: event.target.value });
   }
 
-  onChange(event) {
-    this.setState({ type: event.target.value });
-  }
+  handleSwitchChange = nr => () => {
+    let switchNumber = `switch${nr}`;
+    this.setState({
+      [switchNumber]: !this.state[switchNumber]
+    });
+  };
 
   onSubmit(e) {
     console.log(this.state);
+    // var v;
+    // if (!Boolean(this.state.switch1)) v = "1";
+    // else v = "2";
+    // console.log(v);
     e.preventDefault();
 
     const newUser = {
       username: this.state.username,
-      email: this.state.email
+      email: this.state.email,
+      user_type: this.state.type ? "1" : "2",
+      password: this.state.password,
+      password2: this.state.password2
     };
 
     axios
-      .post("http://localhost:4000/add", newUser)
-      .then(res => console.log(res.data));
+      .post("http://localhost:4000/user/register", newUser)
+      .then(res => {
+        // console.log(res);
+        console.log(res.data);
+      })
+      .catch(res => {
+        console.log(res);
+      });
 
-    this.setState({
-      username: "",
-      email: ""
-    });
+    // this.setState({
+    //   username: "",
+    //   email: ""
+    // });
   }
 
   render() {
@@ -121,15 +127,22 @@ export default class Register extends Component {
                     value={this.state.password2}
                     onChange={this.onChangePassword2}
                   />
-                  <MDBDropdown size="sm">
-                    <MDBDropdownToggle caret color="dark">
-                      Register As
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu basic>
-                      <MDBDropdownItem>Vendor</MDBDropdownItem>
-                      <MDBDropdownItem>Customer</MDBDropdownItem>
-                    </MDBDropdownMenu>
-                  </MDBDropdown>
+                  <div className="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      className="custom-control-input"
+                      id="customSwitches"
+                      checked={this.state.switch1}
+                      onChange={this.handleSwitchChange(1)}
+                      readOnly
+                    />
+                    <label
+                      className="custom-control-label"
+                      htmlFor="customSwitches"
+                    >
+                      Register as Vendor
+                    </label>
+                  </div>
                 </div>
                 <div className="text-center">
                   <MDBBtn color="primary" type="submit">

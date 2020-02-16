@@ -23,8 +23,10 @@ router.get("/", function(req, res) {
 // @access Public
 router.post("/register", (req, res) => {
   // Form validationconst
+  console.log(req.body);
   const { errors, isValid } = validateRegisterInput(req.body); // Check validation
   if (!isValid) {
+    // console.log(errors);
     return res.status(400).json(errors);
   }
   User.findOne({ email: req.body.email }).then(user => {
@@ -38,7 +40,7 @@ router.post("/register", (req, res) => {
         user_type: req.body.user_type,
         rating: 0.0,
         review: [],
-        num_rating = 0
+        num_rating: 0
       }); // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -210,7 +212,7 @@ router.get("/:vid/get_dispatched", function(req, res) {
 
 router.get("/profile/:vid", function(req, res) {
   let vid = req.params.vid;
-  User.find({ userid: vid, type: 1 }, function(err, users) {
+  User.find({ userid: vid, user_type: 1 }, function(err, users) {
     if (err) {
       console.log(err);
     } else {
