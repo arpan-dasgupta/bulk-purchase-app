@@ -47,6 +47,8 @@ export default class Login extends Component {
         // console.log(res);
         console.log(res.data);
         console.log("yo");
+        localStorage.setItem("id_hash", res.data.id);
+        localStorage.setItem("type", res.data.type);
 
         // window.location.href = "/user/login";
       })

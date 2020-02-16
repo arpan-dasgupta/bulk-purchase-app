@@ -2,9 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import UsersList from "./components/users-list.component";
-import Login from "./components/login.component";
-import Register from "./components/register.component";
+import UsersList from "./components/users-list";
+import Login from "./components/login";
+import Register from "./components/register";
+import Cdashboard from "./components/cust-dashboard";
+import Vdashboard from "./components/vend-dashboard";
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
         <Route path="/" exact component={UsersList} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <Route path="/cdashboard" component={Cdashboard} />
+        <Route path="/vdashboard" component={Vdashboard} />
       </div>
     </Router>
   );
