@@ -8,7 +8,8 @@ export default class Vdashboard extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("type") == 2) window.location.href = "/cdashboard";
+    if (localStorage.getItem("type") === 2)
+      window.location.href = "/cdashboard";
 
     axios
       .get("http://localhost:4000/")

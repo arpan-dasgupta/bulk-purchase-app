@@ -5,13 +5,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import UsersList from "./components/users-list";
 import Login from "./components/login";
 import Register from "./components/register";
-import Cdashboard from "./components/cust-dashboard";
-import Vdashboard from "./components/vend-dashboard";
+import Dashboard from "./components/dashboard";
+import Navbar from "./components/navbar";
+// import Vdashboard from "./components/vend-dashboard";
 
 function App() {
   return (
     <Router>
       <div className="container">
+        <Navbar></Navbar>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <Link to="/" className="navbar-brand">
             Bulk Purchase App
@@ -36,13 +38,12 @@ function App() {
             </ul>
           </div>
         </nav>
-
         <br />
         <Route path="/" exact component={UsersList} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/cdashboard" component={Cdashboard} />
-        <Route path="/vdashboard" component={Vdashboard} />
+        <Route path="/dashboard" component={Dashboard} />
+        {/* <Route path="/vdashboard" component={Vdashboard} /> */}
       </div>
     </Router>
   );
