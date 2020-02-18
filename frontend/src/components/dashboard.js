@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Cdashboard from "./cust-dashboard";
 import Vdashboard from "./vend-dashboard";
-import Navbar from "./navbar";
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ export default class Dashboard extends Component {
     this.state = { users: [] };
   }
   render() {
-    if (localStorage.getItem("type") == 1)
+    if (localStorage.getItem("type") == "1")
       return (
         <div>
           {/* <Navbar></Navbar> */}

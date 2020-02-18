@@ -164,8 +164,8 @@ router.post("/:vid/add_item", function(req, res) {
     });
 });
 
-router.post("/:pid/cencel_item", function(req, res) {
-  Product.findByIdAndDelete(req.params.oid, function(err, users) {
+router.post("/:pid/cancel_item", function(req, res) {
+  Product.findByIdAndDelete(req.params.pid, function(err, users) {
     if (err) {
       console.log(err);
     } else {
@@ -236,7 +236,18 @@ router.get("/profile/:vid", function(req, res) {
 // Customer Endpoints
 
 // Product.plugin(mongoose_fuzzy_searching, { fields: ["productname"] });
-router.get("/search", function(req, res) {
+router.get("/all_prods", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  Product.find(function(err, prod) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(prod);
+    }
+  });
+});
+
+router.post("/search", function(req, res) {
   // Product.mongoose_fuzzy_searching();
   Product.find({ productname: req.body.productname }, function(err, prod) {
     if (err) {

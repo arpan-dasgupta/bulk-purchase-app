@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from "mdbreact";
 import axios from "axios";
 import "font-awesome/css/font-awesome.min.css";
@@ -81,7 +81,7 @@ export default class ProductForm extends Component {
         <MDBContainer>
           <MDBRow>
             <MDBCol md="6">
-              <form onSubmit={this.onSubmit}>
+              <Form onSubmit={this.onSubmit}>
                 <p className="h5 text-center mb-4">Add Product</p>
                 <div className="grey-text">
                   <MDBInput
@@ -89,14 +89,14 @@ export default class ProductForm extends Component {
                     icon="chevron-circle-right"
                     group
                     validate
-                    type="name"
+                    type="text"
                     value={this.state.name}
                     onChange={this.onChangeName}
                   />
                   <MDBInput
                     label="Price per item"
                     icon="chevron-circle-right"
-                    type="price"
+                    type="number"
                     group
                     value={this.state.price}
                     onChange={this.onChangePrice}
@@ -104,15 +104,15 @@ export default class ProductForm extends Component {
                   <MDBInput
                     label="Quantity"
                     icon="chevron-circle-right"
-                    type="quantity"
+                    type="number"
                     group
                     value={this.state.quantity}
                     onChange={this.onChangeQuantity}
                   />
                   <MDBInput
-                    label="Image Link (Opt.)"
+                    // label="Image Link (Opt.)"
                     icon="chevron-circle-right"
-                    type="image"
+                    type="file"
                     group
                     value={this.state.image}
                     onChange={this.onChangeImage}
@@ -123,7 +123,7 @@ export default class ProductForm extends Component {
                     Add
                   </MDBBtn>
                 </div>
-              </form>
+              </Form>
             </MDBCol>
           </MDBRow>
         </MDBContainer>

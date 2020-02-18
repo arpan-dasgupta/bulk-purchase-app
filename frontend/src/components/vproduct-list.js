@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from "mdbreact";
 import axios from "axios";
 import "font-awesome/css/font-awesome.min.css";
 // import Navbar from "./navbar";
@@ -13,31 +12,20 @@ export default class MyProds extends Component {
   }
 
   onDelete(e) {
-    console.log(this.state);
+    // console.log(e);
+    console.log(e.target.value);
     e.preventDefault();
 
-    const newProd = {
-      name: this.state.name,
-      quantity: this.state.quantity,
-      price: this.state.price,
-      image: this.state.image
-    };
+    const newProd = {};
 
     axios
       .post(
-        "http://localhost:4000/user/" +
-          localStorage.getItem("id_hash") +
-          "/add_item",
+        "http://localhost:4000/user/" + e.target.value + "/cancel_item",
         newProd
       )
       .then(res => {
-        // console.log(res);
-        // console.log(res.data);
-        // console.log("yo");
-        // localStorage.setItem("id_hash", res.data.id);
-        // localStorage.setItem("type", res.data.type);
-        alert("Product Added Successfully");
-        window.location.href = "/dashboard";
+        alert("Product Deleted Successfully");
+        window.location.href = "/vproductlist";
       })
       .catch(res => {
         console.log(res);
@@ -70,8 +58,9 @@ export default class MyProds extends Component {
           <thead>
             <tr>
               <th>Product Name</th>
-              <th>Quantity</th>
+              <th>Quantity Left</th>
               <th>Price</th>
+              <th>Status</th>
               <th>Image</th>
               <th></th>
             </tr>
@@ -83,6 +72,7 @@ export default class MyProds extends Component {
                   <td>{currentProd.productname}</td>
                   <td>{currentProd.quantity}</td>
                   <td>{currentProd.price}</td>
+                  <td>{currentProd.status}</td>
                   <td>{currentProd.image}</td>
                   <td>
                     <Button

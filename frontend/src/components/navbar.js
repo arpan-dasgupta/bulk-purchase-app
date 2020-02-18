@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { BrowserRouter as Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export class NavbarItem extends Component {
   render() {
     return (
       <li className="navbar-item">
-        <Link to={this.props.link} className="nav-link">
+        <a href={this.props.link} className="nav-link">
           {this.props.name}
-        </Link>
+        </a>
       </li>
     );
   }
@@ -19,19 +18,65 @@ export default class Navbar extends Component {
     return (
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to="/" className="navbar-brand">
+          <a href="/login" className="navbar-brand">
             Bulk Purchase App
-          </Link>
+          </a>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
-              <li className="navbar-item">
+              {/* <li className="navbar-item">
                 <Link to="/" className="nav-link">
                   Users
                 </Link>
-              </li>
-              <NavbarItem link="/" name="Users"></NavbarItem>
+              </li> */}
+              {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
               <NavbarItem link="/register" name="Register"></NavbarItem>
               <NavbarItem link="/login" name="Login"></NavbarItem>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    );
+  }
+}
+
+export class VendorNavbar extends Component {
+  render() {
+    return (
+      <div className="container">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <a href="/dashboard" className="navbar-brand">
+            Bulk Purchase App
+          </a>
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav mr-auto">
+              {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
+              <NavbarItem link="/login" name="Login"></NavbarItem>
+              <NavbarItem link="/register" name="Register"></NavbarItem>
+              <NavbarItem link="/addproduct" name="Add Product"></NavbarItem>
+              <NavbarItem link="/vproductlist" name="Product List"></NavbarItem>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    );
+  }
+}
+
+export class CustomerNavbar extends Component {
+  render() {
+    return (
+      <div className="container">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <a href="/dashboard" className="navbar-brand">
+            Bulk Purchase App
+          </a>
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav mr-auto">
+              {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
+              <NavbarItem link="/login" name="Login"></NavbarItem>
+              <NavbarItem link="/register" name="Register"></NavbarItem>
+              {/* <NavbarItem link="/addproduct" name="Add Product"></NavbarItem>
+              <NavbarItem link="/vproductlist" name="Product List"></NavbarItem> */}
             </ul>
           </div>
         </nav>

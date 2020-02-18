@@ -6,39 +6,22 @@ import UsersList from "./components/users-list";
 import Login from "./components/login";
 import Register from "./components/register";
 import Dashboard from "./components/dashboard";
-import Navbar from "./components/navbar";
+import Navbar, { VendorNavbar } from "./components/navbar";
+import CustomerNavbar from "./components/navbar";
 import ProductForm from "./components/vproduct-add";
 import MyProds from "./components/vproduct-list";
 
 function App() {
+  var nb;
+  if (localStorage.getItem("type") === "2")
+    nb = <CustomerNavbar></CustomerNavbar>;
+  else if (localStorage.getItem("type") === "1")
+    nb = <VendorNavbar></VendorNavbar>;
+  else nb = <Navbar></Navbar>;
   return (
     <Router>
       <div className="container">
-        {/* <Navbar></Navbar> */}
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to="/" className="navbar-brand">
-            Bulk Purchase App
-          </Link>
-          <div className="collapse navbar-collapse">
-            <ul className="navbar-nav mr-auto">
-              <li className="navbar-item">
-                <Link to="/" className="nav-link">
-                  Users
-                </Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/register" className="nav-link">
-                  Register
-                </Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/login" className="nav-link">
-                  Login
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        {nb}
         <br />
         <Route path="/" exact component={UsersList} />
         <Route path="/login" component={Login} />
