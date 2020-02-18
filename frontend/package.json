@@ -12,6 +12,7 @@
     "mdbreact": "^4.25.1",
     "package.json": "^2.0.1",
     "react": "^16.12.0",
+    "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-fontawesome": "^1.7.1",
     "react-router-dom": "^5.1.2",

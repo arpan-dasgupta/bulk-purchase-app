@@ -7,7 +7,8 @@ import Login from "./components/login";
 import Register from "./components/register";
 import Dashboard from "./components/dashboard";
 import Navbar from "./components/navbar";
-// import Vdashboard from "./components/vend-dashboard";
+import ProductForm from "./components/vproduct-add";
+import MyProds from "./components/vproduct-list";
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/dashboard" component={Dashboard} />
+        <Route path="/addproduct" component={ProductForm} />
+        <Route path="/vproductlist" component={MyProds} />
         {/* <Route path="/vdashboard" component={Vdashboard} /> */}
       </div>
     </Router>

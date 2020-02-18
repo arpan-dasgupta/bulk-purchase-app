@@ -164,6 +164,16 @@ router.post("/:vid/add_item", function(req, res) {
     });
 });
 
+router.post("/:pid/cencel_item", function(req, res) {
+  Product.findByIdAndDelete(req.params.oid, function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(users);
+    }
+  });
+});
+
 router.get("/:vid/get_items", function(req, res) {
   let vid = req.params.vid;
   Product.find({ userid: vid }, function(err, prod) {

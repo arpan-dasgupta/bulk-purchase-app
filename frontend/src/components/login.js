@@ -2,7 +2,6 @@ import React, { Component } from "react";
 // import { Button, Form } from "react-bootstrap";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from "mdbreact";
 import axios from "axios";
-// import "../Login.css";
 import "font-awesome/css/font-awesome.min.css";
 
 export default class Login extends Component {
