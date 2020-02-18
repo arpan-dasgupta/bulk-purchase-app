@@ -60,10 +60,11 @@ export default class Register extends Component {
     const newUser = {
       username: this.state.username,
       email: this.state.email,
-      user_type: this.state.type ? "1" : "2",
+      user_type: this.state.switch1 ? "1" : "2",
       password: this.state.password,
       password2: this.state.password2
     };
+    // console.log(newUser);
 
     axios
       .post("http://localhost:4000/user/register", newUser)

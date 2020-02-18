@@ -213,7 +213,7 @@ router.get("/:vid/get_dispatched", function(req, res) {
 
 router.get("/profile/:vid", function(req, res) {
   let vid = req.params.vid;
-  User.find({ userid: vid, user_type: 1 }, function(err, users) {
+  User.find({ _id: vid, user_type: 1 }, function(err, users) {
     if (err) {
       console.log(err);
     } else {

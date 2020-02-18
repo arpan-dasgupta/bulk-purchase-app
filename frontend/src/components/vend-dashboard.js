@@ -4,17 +4,35 @@ import axios from "axios";
 export default class Vdashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = { users: [] };
+    this.state = {
+      users: [],
+      name: "",
+      email: "",
+      rating: 0,
+      num_rating: 0,
+      reviews: []
+    };
   }
 
   componentDidMount() {
     if (localStorage.getItem("type") === 2)
       window.location.href = "/cdashboard";
+    console.log("yi");
 
     axios
-      .get("http://localhost:4000/")
+      .get(
+        "http://localhost:4000/user/profile/" + localStorage.getItem("id_hash")
+      )
       .then(response => {
-        this.setState({ users: response.data });
+        console.log(response);
+        // console.log(response.data[0]._id);
+        this.setState({
+          name: response.data[0].username,
+          email: response.data[0].email,
+          rating: response.data[0].rating,
+          num_rating: response.data[0].num_rating,
+          reviews: response.data[0].reviews
+        });
       })
       .catch(function(error) {
         console.log(error);
@@ -24,24 +42,16 @@ export default class Vdashboard extends Component {
   render() {
     return (
       <div>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.users.map((currentUser, i) => {
-              return (
-                <tr>
-                  <td>{currentUser.username}</td>
-                  <td>{currentUser.email}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {this.state.name}
+        {/* Yo */}
+        <br />
+        {this.state.email}
+        <br />
+        {this.state.rating}
+        <br />
+        {this.state.num_rating}
+        <br />
+        {this.state.reviews}
       </div>
     );
   }

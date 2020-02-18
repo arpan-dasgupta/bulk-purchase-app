@@ -9,17 +9,19 @@ export default class Dashboard extends Component {
     this.state = { users: [] };
   }
   render() {
-    if (localStorage.getItem("type") === 1)
+    if (localStorage.getItem("type") == 1)
       return (
         <div>
-          <Navbar></Navbar>
+          {/* <Navbar></Navbar> */}
+          Vendor
           <Vdashboard></Vdashboard>
         </div>
       );
     else
       return (
         <div>
-          <Navbar></Navbar>
+          {/* <Navbar></Navbar> */}
+          Customer
           <Cdashboard></Cdashboard>
         </div>
       );

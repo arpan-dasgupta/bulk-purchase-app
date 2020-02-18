@@ -50,7 +50,7 @@ export default class Login extends Component {
         localStorage.setItem("id_hash", res.data.id);
         localStorage.setItem("type", res.data.type);
 
-        // window.location.href = "/user/login";
+        window.location.href = "/dashboard";
       })
       .catch(res => {
         console.log(res);
@@ -70,7 +70,7 @@ export default class Login extends Component {
           <MDBRow>
             <MDBCol md="6">
               <form onSubmit={this.onSubmit}>
-                <p className="h5 text-center mb-4">Sign up</p>
+                <p className="h5 text-center mb-4">Login</p>
                 <div className="grey-text">
                   <MDBInput
                     label="Your email"
