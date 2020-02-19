@@ -95,8 +95,13 @@ export default class Cdashboard extends Component {
                   <td>{currentProd.quantity}</td>
                   <td>{currentProd.price}</td>
                   <td>{currentProd.status}</td>
-                  <td>{currentProd.vname}</td>
-                  <td>{currentProd.vrating}</td>
+                  <td>{currentProd.userid.username}</td>
+                  <td>
+                    {currentProd.userid.num_rating === 0
+                      ? 0
+                      : currentProd.userid.rating /
+                        currentProd.userid.num_rating}
+                  </td>
                   <td>
                     <img src={currentProd.image} width="50%" height="50%"></img>
                   </td>

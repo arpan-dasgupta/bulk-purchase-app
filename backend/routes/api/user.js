@@ -245,13 +245,16 @@ router.post("/delete_prods", (req, res) => {
 });
 
 router.get("/all_prods", function(req, res) {
-  Product.find(function(err, prod) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(prod);
-    }
-  });
+  Product.find({})
+    .populate("userid")
+    .exec(function(err, prod) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(prod);
+        res.json(prod);
+      }
+    });
   // Product.aggregate([
   //   {
   //     $lookup: {
@@ -274,25 +277,16 @@ router.post("/search", function(req, res) {
   // Product.mongoose_fuzzy_searching();
   // console.log(req.body.productname);
   const regex = new RegExp(escapeRegex(req.body.productname), "gi");
-  Product.find({ productname: regex }, function(err, prod) {
-    if (err) {
-      console.log(err);
-    } else {
-      for (var i = 0; i < prod.length; i++) {
-        // console.log(prod[i].userid);
-        User.findById(prod[i].userid, function(e, vd) {
-          if (e) {
-          } else {
-            if (vd) {
-              prod[i].vrating = vd.rating;
-              prod[i].vname = vd.username;
-            }
-          }
-        });
+  Product.find({ productname: regex })
+    .populate("userid")
+    .exec(function(err, prod) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(prod);
+        res.json(prod);
       }
-      res.json(prod);
-    }
-  });
+    });
 });
 
 router.post("/place_order", function(req, res) {
