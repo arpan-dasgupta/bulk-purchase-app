@@ -25,7 +25,7 @@ export default class Navbar extends Component {
             <ul className="navbar-nav mr-auto">
               {/* <li className="navbar-item">
                 <Link to="/" className="nav-link">
-                  Users
+                Users
                 </Link>
               </li> */}
               {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
@@ -54,6 +54,19 @@ export class VendorNavbar extends Component {
               <NavbarItem link="/register" name="Register"></NavbarItem>
               <NavbarItem link="/addproduct" name="Add Product"></NavbarItem>
               <NavbarItem link="/vproductlist" name="Product List"></NavbarItem>
+              <li className="navbar-item">
+                <a
+                  href="/login"
+                  onClick={function() {
+                    console.log("a");
+                    localStorage.setItem("id_hash", "");
+                    localStorage.setItem("type", "0");
+                  }}
+                  className="nav-link"
+                >
+                  Logout
+                </a>
+              </li>
             </ul>
           </div>
         </nav>
@@ -75,8 +88,19 @@ export class CustomerNavbar extends Component {
               {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
               <NavbarItem link="/login" name="Login"></NavbarItem>
               <NavbarItem link="/register" name="Register"></NavbarItem>
-              {/* <NavbarItem link="/addproduct" name="Add Product"></NavbarItem>
-              <NavbarItem link="/vproductlist" name="Product List"></NavbarItem> */}
+              <li className="navbar-item">
+                <a
+                  href="/login"
+                  onClick={function() {
+                    console.log("a");
+                    localStorage.setItem("id_hash", "");
+                    localStorage.setItem("type", "0");
+                  }}
+                  className="nav-link"
+                >
+                  Logout
+                </a>
+              </li>
             </ul>
           </div>
         </nav>

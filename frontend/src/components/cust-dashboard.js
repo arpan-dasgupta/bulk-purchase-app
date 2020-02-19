@@ -17,15 +17,25 @@ export default class Cdashboard extends Component {
     const search = {
       productname: val
     };
-
-    axios
-      .post("http://localhost:4000/user/search", search)
-      .then(response => {
-        this.setState({ prods: response.data });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    if (val === "") {
+      axios
+        .get("http://localhost:4000/user/all_prods")
+        .then(response => {
+          this.setState({ prods: response.data });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    } else {
+      axios
+        .post("http://localhost:4000/user/search", search)
+        .then(response => {
+          this.setState({ prods: response.data });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   }
 
   componentDidMount() {
@@ -83,7 +93,9 @@ export default class Cdashboard extends Component {
                   <td>{currentProd.quantity}</td>
                   <td>{currentProd.price}</td>
                   <td>{currentProd.status}</td>
-                  <td>{currentProd.image}</td>
+                  <td>
+                    <img src={currentProd.image} width="50%" height="50%"></img>
+                  </td>
                 </tr>
               );
             })}

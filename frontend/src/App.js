@@ -1,13 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import UsersList from "./components/users-list";
 import Login from "./components/login";
 import Register from "./components/register";
 import Dashboard from "./components/dashboard";
-import Navbar, { VendorNavbar } from "./components/navbar";
-import CustomerNavbar from "./components/navbar";
+import Navbar, { VendorNavbar, CustomerNavbar } from "./components/navbar";
 import ProductForm from "./components/vproduct-add";
 import MyProds from "./components/vproduct-list";
 

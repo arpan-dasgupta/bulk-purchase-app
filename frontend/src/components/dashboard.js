@@ -8,7 +8,7 @@ export default class Dashboard extends Component {
     this.state = { users: [] };
   }
   render() {
-    if (localStorage.getItem("type") == "1")
+    if (localStorage.getItem("type") === "1")
       return (
         <div>
           {/* <Navbar></Navbar> */}

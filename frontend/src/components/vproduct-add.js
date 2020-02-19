@@ -5,6 +5,22 @@ import axios from "axios";
 import "font-awesome/css/font-awesome.min.css";
 // import Navbar from "./navbar";
 
+function previewFile() {
+  var preview = document.querySelector("img");
+  var file = document.querySelector("input[type=file]").files[0];
+  var reader = new FileReader();
+
+  reader.onloadend = function() {
+    preview.src = reader.result;
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    preview.src = "";
+  }
+}
+
 export default class ProductForm extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +28,7 @@ export default class ProductForm extends Component {
       name: "",
       quantity: "",
       price: "",
-      image: ""
+      image: null
     };
 
     this.onChangeName = this.onChangeName.bind(this);
@@ -34,7 +50,17 @@ export default class ProductForm extends Component {
   }
 
   onChangeImage(event) {
-    this.setState({ image: event.target.value });
+    var self = this;
+    var reader = new FileReader();
+    var file = event.target.files[0];
+
+    reader.onload = function(upload) {
+      self.setState({
+        image: upload.target.result
+      });
+    };
+
+    reader.readAsDataURL(file);
   }
 
   onSubmit(e) {
@@ -114,7 +140,7 @@ export default class ProductForm extends Component {
                     icon="chevron-circle-right"
                     type="file"
                     group
-                    value={this.state.image}
+                    // value={this.state.image}
                     onChange={this.onChangeImage}
                   />
                 </div>

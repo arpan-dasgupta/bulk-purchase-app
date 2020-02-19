@@ -6,7 +6,6 @@ let Order = require("../../models/Order");
 const keys = require("../../config/key");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
@@ -235,9 +234,7 @@ router.get("/profile/:vid", function(req, res) {
 
 // Customer Endpoints
 
-// Product.plugin(mongoose_fuzzy_searching, { fields: ["productname"] });
 router.get("/all_prods", function(req, res) {
-  // Product.mongoose_fuzzy_searching();
   Product.find(function(err, prod) {
     if (err) {
       console.log(err);
@@ -247,9 +244,15 @@ router.get("/all_prods", function(req, res) {
   });
 });
 
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
 router.post("/search", function(req, res) {
   // Product.mongoose_fuzzy_searching();
-  Product.find({ productname: req.body.productname }, function(err, prod) {
+  // console.log(req.body.productname);
+  const regex = new RegExp(escapeRegex(req.body.productname), "gi");
+  Product.find({ productname: regex }, function(err, prod) {
     if (err) {
       console.log(err);
     } else {

@@ -45,6 +45,7 @@ export default class MyProds extends Component {
       )
       .then(response => {
         this.setState({ prods: response.data });
+        console.log(response.data);
       })
       .catch(function(error) {
         console.log(error);
@@ -73,7 +74,9 @@ export default class MyProds extends Component {
                   <td>{currentProd.quantity}</td>
                   <td>{currentProd.price}</td>
                   <td>{currentProd.status}</td>
-                  <td>{currentProd.image}</td>
+                  <td>
+                    <img src={currentProd.image} width="50%" height="50%"></img>
+                  </td>
                   <td>
                     <Button
                       type="delete"
