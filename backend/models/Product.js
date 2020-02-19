@@ -17,7 +17,7 @@ let Product = new mongoose.Schema({
     type: String
   },
   userid: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
   image: {

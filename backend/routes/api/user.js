@@ -234,44 +234,36 @@ router.get("/profile/:vid", function(req, res) {
 
 // Customer Endpoints
 
-router.get("/all_prods", function(req, res) {
-  // Product.find(function(err, prod) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     for (var i = 0; i < prod.length; i++) {
-  //       console.log(i);
-  //       // console.log(prod[i].userid);
-  //       var ee = prod[i];
-  //       User.findById(prod[i].userid, function(e, vd) {
-  //         if (e) {
-  //         } else {
-  //           console.log(ee);
-  //           if (vd) {
-  //             ee.vrating = vd.rating;
-  //             ee.vname = vd.username;
-  //             // return vd.rating;
-  //             x = vd.rating;
-  //           }
-  //         }
-  //       });
-  //       prod[i] = ee;
-  //     }
-  //     res.json(prod);
-  //   }
-  // });
-  Product.aggregate([
-    {
-      $lookup: {
-        from: "User",
-        localfield: "userid",
-        foreignField: "_id",
-        as: "vendor"
-      }
+router.post("/delete_prods", (req, res) => {
+  Product.deleteMany(function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(users);
     }
-  ]).exec(function(e, p) {
-    console.log(p);
   });
+});
+
+router.get("/all_prods", function(req, res) {
+  Product.find(function(err, prod) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(prod);
+    }
+  });
+  // Product.aggregate([
+  //   {
+  //     $lookup: {
+  //       from: "User",
+  //       localfield: "userid",
+  //       foreignField: "_id",
+  //       as: "vendor"
+  //     }
+  //   }
+  // ]).exec(function(e, p) {
+  //   console.log(p);
+  // });
 });
 
 function escapeRegex(text) {
