@@ -88,7 +88,7 @@ export default class ProductForm extends Component {
         // localStorage.setItem("id_hash", res.data.id);
         // localStorage.setItem("type", res.data.type);
         alert("Product Added Successfully");
-        window.location.href = "/dashboard";
+        window.location.href = "/addproduct";
       })
       .catch(res => {
         console.log(res);

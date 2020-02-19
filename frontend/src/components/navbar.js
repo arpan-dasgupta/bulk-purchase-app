@@ -55,6 +55,10 @@ export class VendorNavbar extends Component {
               <NavbarItem link="/addproduct" name="Add Product"></NavbarItem>
               <NavbarItem link="/vproductlist" name="Product List"></NavbarItem>
               <NavbarItem link="/readyprod" name="Products Ready"></NavbarItem>
+              <NavbarItem
+                link="/dispprod"
+                name="Products Dispatched"
+              ></NavbarItem>
               <li className="navbar-item">
                 <a
                   href="/login"

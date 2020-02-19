@@ -4,7 +4,7 @@ import axios from "axios";
 import "font-awesome/css/font-awesome.min.css";
 // import Navbar from "./navbar";
 
-export default class MyProds extends Component {
+export default class DispProds extends Component {
   constructor(props) {
     super(props);
     this.state = { prods: [] };
@@ -69,7 +69,7 @@ export default class MyProds extends Component {
           <tbody>
             {this.state.prods
               .filter(function(v) {
-                return v.status === "Waiting";
+                return v.status === "Dispatched";
               })
               .map((currentProd, i) => {
                 return (
@@ -91,7 +91,7 @@ export default class MyProds extends Component {
                         value={currentProd._id}
                         onClick={this.onDelete}
                       >
-                        Cancel
+                        Dispatch
                       </Button>
                     </td>
                   </tr>

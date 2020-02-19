@@ -13,22 +13,22 @@ export default class ReadyProds extends Component {
 
   onDelete(e) {
     // console.log(e);
-    console.log(e.target.value);
-    e.preventDefault();
+    // console.log(e.target.value);
+    // e.preventDefault();
 
-    const newProd = { vid: localStorage.getItem("id_hash") };
+    const newProd = {
+      vid: localStorage.getItem("id_hash"),
+      pid: e.target.value
+    };
 
     axios
-      .post(
-        "http://localhost:4000/user/" + e.target.value + "/cancel_item",
-        newProd
-      )
+      .post("http://localhost:4000/user/dispatch_item", newProd)
       .then(res => {
-        alert("Product Deleted Successfully");
-        window.location.href = "/vproductlist";
+        alert("Product Dispatched Successfully");
+        window.location.href = "/readyprod";
       })
       .catch(res => {
-        console.log(res);
+        // console.log(res);
         console.log("no");
       });
   }
@@ -91,7 +91,7 @@ export default class ReadyProds extends Component {
                         value={currentProd._id}
                         onClick={this.onDelete}
                       >
-                        Delete
+                        Dispatch
                       </Button>
                     </td>
                   </tr>

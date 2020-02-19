@@ -210,17 +210,21 @@ router.get("/:vid/get_items", function(req, res) {
 });
 
 router.post("/dispatch_item", function(req, res) {
-  let vid = req.params.vid;
-  Product.findByIdAndUpdate(req.body.pid, { status: "Dispatched" }, function(
-    err,
-    prod
-  ) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(prod);
+  let vid = req.body.vid;
+  console.log(req.body.pid, vid);
+  Product.findOneAndUpdate(
+    { _id: req.body.pid, userid: vid },
+    { status: "Dispatched" },
+    function(err, prod) {
+      if (err) {
+        console.log(err);
+        res.status(400).json();
+      } else {
+        if (prod == null) res.status(403).json();
+        else res.json(prod);
+      }
     }
-  });
+  );
 });
 
 router.get("/:vid/get_ready", function(req, res) {
