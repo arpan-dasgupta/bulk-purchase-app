@@ -55,16 +55,6 @@ router.post("/register", (req, res) => {
   });
 });
 
-router.post("/delete", (req, res) => {
-  User.deleteMany(function(err, users) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(users);
-    }
-  });
-});
-
 // @route POST api/users/login
 // @desc Login user and return JWT token
 // @access Public
@@ -110,28 +100,51 @@ router.post("/login", (req, res) => {
   });
 });
 
-// router.post("/add_user", function(req, res) {
-//   console.log(req.body.name);
-//   console.log(req.body.email);
-//   let user = new User({
-//     username: req.body.name,
-//     email: req.body.email,
-//     password: req.body.password,
-//     rating: 0.0,
-//     review: []
-//   });
-//   user
-//     .save()
-//     .then(user => {
-//       res.status(200).json({ User: "User added successfully" });
-//     })
-//     .catch(err => {
-//       res.status(400).send("Error");
-//     });
-// });
+// Admin endpoints
 
 router.get("/get_users", function(req, res) {
   User.find(function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(users);
+    }
+  });
+});
+
+router.post("/delete_prods", (req, res) => {
+  Product.deleteMany(function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(users);
+    }
+  });
+});
+
+router.post("/delete_orders", (req, res) => {
+  Order.deleteMany(function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(users);
+    }
+  });
+});
+
+router.get("/orders", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  Order.find({}, function(err, ord) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(ord);
+    }
+  });
+});
+
+router.post("/delete", (req, res) => {
+  User.deleteMany(function(err, users) {
     if (err) {
       console.log(err);
     } else {
@@ -164,11 +177,23 @@ router.post("/:vid/add_item", function(req, res) {
 });
 
 router.post("/:pid/cancel_item", function(req, res) {
-  Product.findByIdAndDelete(req.params.pid, function(err, users) {
+  User.findOne({ _id: req.body.vid, user_type: 1 }, function(err, users) {
     if (err) {
       console.log(err);
     } else {
-      res.json(users);
+      console.log(users);
+      if (users === null) {
+        res.status(403).json();
+        return;
+      } else {
+        Product.findByIdAndDelete(req.params.pid, function(err, users) {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json(users);
+          }
+        });
+      }
     }
   });
 });
@@ -234,16 +259,6 @@ router.get("/profile/:vid", function(req, res) {
 
 // Customer Endpoints
 
-router.post("/delete_prods", (req, res) => {
-  Product.deleteMany(function(err, users) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(users);
-    }
-  });
-});
-
 router.get("/all_prods", function(req, res) {
   Product.find({})
     .populate("userid")
@@ -255,18 +270,6 @@ router.get("/all_prods", function(req, res) {
         res.json(prod);
       }
     });
-  // Product.aggregate([
-  //   {
-  //     $lookup: {
-  //       from: "User",
-  //       localfield: "userid",
-  //       foreignField: "_id",
-  //       as: "vendor"
-  //     }
-  //   }
-  // ]).exec(function(e, p) {
-  //   console.log(p);
-  // });
 });
 
 function escapeRegex(text) {
@@ -291,21 +294,84 @@ router.post("/search", function(req, res) {
 
 router.post("/place_order", function(req, res) {
   // Product.mongoose_fuzzy_searching();
-  let ord = new Order({
-    productid: req.body.pid,
-    userid: req.body.vid,
-    rated: false,
-    reviewed: false,
-    quantity: req.body.quantity
+  User.findOne({ _id: req.body.cid, user_type: 2 }, function(err, users) {
+    if (err) {
+      console.log(err);
+      res.status(403).json();
+    } else {
+      console.log(users);
+      if (users === null) {
+        res.status(403).json();
+        return;
+      } else {
+        Product.findById(req.body.pid, function(e, prod) {
+          if (e) console.log(err);
+          else {
+            console.log(prod.quantity);
+            console.log(req.body.quantity);
+            if (prod.quantity < req.body.quantity) {
+              res.status(400).json();
+            } else if (prod.quantity == req.body.quantity) {
+              Product.findByIdAndUpdate(
+                req.body.pid,
+                {
+                  status: "Ready",
+                  quantity: 0
+                },
+                function(rr, pp) {
+                  if (rr) console.log("no0");
+                  else console.log("ye3");
+                }
+              );
+              let ord = new Order({
+                productid: req.body.pid,
+                userid: req.body.cid,
+                rated: false,
+                reviewed: false,
+                quantity: req.body.quantity
+              });
+              ord
+                .save()
+                .then(ord => {
+                  res.status(200).json({ Order: "Order placed successfully" });
+                })
+                .catch(err => {
+                  res.status(400).send("Error");
+                });
+            } else {
+              console.log(prod.quantity - req.body.quantity);
+              var x = prod.quantity - req.body.quantity;
+              Product.findByIdAndUpdate(
+                req.body.pid,
+                {
+                  quantity: x
+                },
+                function(rr, pp) {
+                  if (rr) console.log("no");
+                  else console.log("ye");
+                }
+              );
+              let ord = new Order({
+                productid: req.body.pid,
+                userid: req.body.cid,
+                rated: false,
+                reviewed: false,
+                quantity: req.body.quantity
+              });
+              ord
+                .save()
+                .then(ord => {
+                  res.status(200).json({ Order: "Order placed successfully" });
+                })
+                .catch(err => {
+                  res.status(400).send("Error");
+                });
+            }
+          }
+        });
+      }
+    }
   });
-  ord
-    .save()
-    .then(ord => {
-      res.status(200).json({ Order: "Order placed successfully" });
-    })
-    .catch(err => {
-      res.status(400).send("Error");
-    });
 });
 
 router.get("/:vid/order_stats", function(req, res) {

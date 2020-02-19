@@ -16,7 +16,7 @@ export default class MyProds extends Component {
     console.log(e.target.value);
     e.preventDefault();
 
-    const newProd = {};
+    const newProd = { vid: localStorage.getItem("id_hash") };
 
     axios
       .post(

@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Form, Button } from "react-bootstrap";
 
 import {
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
-  MDBDropdownItem
+  MDBDropdownItem,
+  MDBInput
 } from "mdbreact";
 import { MDBCol, MDBIcon } from "mdbreact";
+import { InputGroup } from "react-bootstrap";
 
 export default class Cdashboard extends Component {
   constructor(props) {
@@ -21,8 +24,8 @@ export default class Cdashboard extends Component {
     this.sortPrice = this.sortPrice.bind(this);
     this.sortQuant = this.sortQuant.bind(this);
     this.sortVend = this.sortVend.bind(this);
+    this.onOrder = this.onOrder.bind(this);
   }
-
   sortPrice(e) {
     // prods.sort();
     this.setState({ sort_by: (a, b) => a.price - b.price });
@@ -70,6 +73,27 @@ export default class Cdashboard extends Component {
           console.log(error);
         });
     }
+  }
+
+  onOrder(e) {
+    console.log(e.target.value);
+    e.preventDefault();
+
+    const newProd = {};
+
+    axios
+      .post(
+        "http://localhost:4000/user/" + e.target.value + "/cancel_item",
+        newProd
+      )
+      .then(res => {
+        alert("Product Deleted Successfully");
+        window.location.href = "/vproductlist";
+      })
+      .catch(res => {
+        console.log(res);
+        console.log("no");
+      });
   }
 
   componentDidMount() {
@@ -135,6 +159,7 @@ export default class Cdashboard extends Component {
               <th>Vendor</th>
               <th>Vendor Rating</th>
               <th>Image</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -154,6 +179,22 @@ export default class Cdashboard extends Component {
                   </td>
                   <td>
                     <img src={currentProd.image} width="50%" height="50%"></img>
+                  </td>
+                  <td>
+                    <Form>
+                      <MDBInput
+                        type="number"
+                        label="Nuber of Items"
+                        // value={}
+                      ></MDBInput>
+                      <Button
+                        type="delete"
+                        value={currentProd._id}
+                        onClick={this.onOrder}
+                      >
+                        Order
+                      </Button>
+                    </Form>
                   </td>
                 </tr>
               );
