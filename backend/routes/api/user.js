@@ -294,6 +294,8 @@ router.post("/search", function(req, res) {
 
 router.post("/place_order", function(req, res) {
   // Product.mongoose_fuzzy_searching();
+  if (req.body.quantity == 0) res.status(403).json();
+
   User.findOne({ _id: req.body.cid, user_type: 2 }, function(err, users) {
     if (err) {
       console.log(err);
@@ -328,7 +330,9 @@ router.post("/place_order", function(req, res) {
                 userid: req.body.cid,
                 rated: false,
                 reviewed: false,
-                quantity: req.body.quantity
+                quantity: req.body.quantity,
+                rating: 0,
+                review: ""
               });
               ord
                 .save()
@@ -356,7 +360,9 @@ router.post("/place_order", function(req, res) {
                 userid: req.body.cid,
                 rated: false,
                 reviewed: false,
-                quantity: req.body.quantity
+                quantity: req.body.quantity,
+                rating: 0,
+                review: ""
               });
               ord
                 .save()

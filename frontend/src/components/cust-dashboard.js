@@ -10,7 +10,6 @@ import {
   MDBInput
 } from "mdbreact";
 import { MDBCol, MDBIcon } from "mdbreact";
-import { InputGroup } from "react-bootstrap";
 
 export default class Cdashboard extends Component {
   constructor(props) {
@@ -31,7 +30,7 @@ export default class Cdashboard extends Component {
     this.setState({ sort_by: (a, b) => a.price - b.price });
   }
   sortQuant(e) {
-    console.log("ok");
+    // console.log("ok");
     // prods.sort();
     this.setState({ sort_by: (a, b) => a.quantity - b.quantity });
   }
@@ -76,23 +75,26 @@ export default class Cdashboard extends Component {
   }
 
   onOrder(e) {
+    const va = prompt("Number of items?");
+    console.log(va);
     console.log(e.target.value);
-    e.preventDefault();
+    // e.preventDefault();
 
-    const newProd = {};
+    const newProd = {
+      pid: e.target.value,
+      quantity: va,
+      cid: localStorage.getItem("id_hash")
+    };
 
     axios
-      .post(
-        "http://localhost:4000/user/" + e.target.value + "/cancel_item",
-        newProd
-      )
+      .post("http://localhost:4000/user/place_order", newProd)
       .then(res => {
-        alert("Product Deleted Successfully");
-        window.location.href = "/vproductlist";
+        alert("Ordered Successfully");
       })
       .catch(res => {
-        console.log(res);
-        console.log("no");
+        // console.log(res);
+        alert("Invalid quantity");
+        // console.log("no");
       });
   }
 
@@ -163,42 +165,44 @@ export default class Cdashboard extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.prods.sort(this.state.sort_by).map((currentProd, i) => {
-              return (
-                <tr>
-                  <td>{currentProd.productname}</td>
-                  <td>{currentProd.quantity}</td>
-                  <td>{currentProd.price}</td>
-                  <td>{currentProd.status}</td>
-                  <td>{currentProd.userid.username}</td>
-                  <td>
-                    {currentProd.userid.num_rating === 0
-                      ? 0
-                      : currentProd.userid.rating /
-                        currentProd.userid.num_rating}
-                  </td>
-                  <td>
-                    <img src={currentProd.image} width="50%" height="50%"></img>
-                  </td>
-                  <td>
-                    <Form>
-                      <MDBInput
-                        type="number"
-                        label="Nuber of Items"
-                        // value={}
-                      ></MDBInput>
+            {this.state.prods
+              .filter(function(v) {
+                return v.status === "Waiting";
+              })
+              .sort(this.state.sort_by)
+              .map((currentProd, i) => {
+                return (
+                  <tr>
+                    <td>{currentProd.productname}</td>
+                    <td>{currentProd.quantity}</td>
+                    <td>{currentProd.price}</td>
+                    <td>{currentProd.status}</td>
+                    <td>{currentProd.userid.username}</td>
+                    <td>
+                      {currentProd.userid.num_rating === 0
+                        ? 0
+                        : currentProd.userid.rating /
+                          currentProd.userid.num_rating}
+                    </td>
+                    <td>
+                      <img
+                        src={currentProd.image}
+                        width="50%"
+                        height="50%"
+                      ></img>
+                    </td>
+                    <td>
                       <Button
-                        type="delete"
-                        value={currentProd._id}
                         onClick={this.onOrder}
+                        value={currentProd._id}
+                        type="submit"
                       >
                         Order
                       </Button>
-                    </Form>
-                  </td>
-                </tr>
-              );
-            })}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

@@ -9,6 +9,7 @@ import Dashboard from "./components/dashboard";
 import Navbar, { VendorNavbar, CustomerNavbar } from "./components/navbar";
 import ProductForm from "./components/vproduct-add";
 import MyProds from "./components/vproduct-list";
+import ReadyProds from "./components/ready-list";
 
 function App() {
   var nb;
@@ -28,6 +29,7 @@ function App() {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/addproduct" component={ProductForm} />
         <Route path="/vproductlist" component={MyProds} />
+        <Route path="/readyprod" component={ReadyProds} />
         {/* <Route path="/vdashboard" component={Vdashboard} /> */}
       </div>
     </Router>

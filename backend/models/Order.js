@@ -15,7 +15,14 @@ let Order = new mongoose.Schema({
     type: Boolean
   },
   quantity: {
+    required: true,
     type: Number
+  },
+  rating: {
+    type: Number
+  },
+  review: {
+    type: String
   }
 });
 
