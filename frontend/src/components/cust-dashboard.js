@@ -82,6 +82,8 @@ export default class Cdashboard extends Component {
               <th>Quantity Left</th>
               <th>Price</th>
               <th>Status</th>
+              <th>Vendor</th>
+              <th>Vendor Rating</th>
               <th>Image</th>
             </tr>
           </thead>
@@ -93,6 +95,8 @@ export default class Cdashboard extends Component {
                   <td>{currentProd.quantity}</td>
                   <td>{currentProd.price}</td>
                   <td>{currentProd.status}</td>
+                  <td>{currentProd.vname}</td>
+                  <td>{currentProd.vrating}</td>
                   <td>
                     <img src={currentProd.image} width="50%" height="50%"></img>
                   </td>

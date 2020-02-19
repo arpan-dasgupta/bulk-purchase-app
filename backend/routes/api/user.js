@@ -235,12 +235,42 @@ router.get("/profile/:vid", function(req, res) {
 // Customer Endpoints
 
 router.get("/all_prods", function(req, res) {
-  Product.find(function(err, prod) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(prod);
+  // Product.find(function(err, prod) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     for (var i = 0; i < prod.length; i++) {
+  //       console.log(i);
+  //       // console.log(prod[i].userid);
+  //       var ee = prod[i];
+  //       User.findById(prod[i].userid, function(e, vd) {
+  //         if (e) {
+  //         } else {
+  //           console.log(ee);
+  //           if (vd) {
+  //             ee.vrating = vd.rating;
+  //             ee.vname = vd.username;
+  //             // return vd.rating;
+  //             x = vd.rating;
+  //           }
+  //         }
+  //       });
+  //       prod[i] = ee;
+  //     }
+  //     res.json(prod);
+  //   }
+  // });
+  Product.aggregate([
+    {
+      $lookup: {
+        from: "User",
+        localfield: "userid",
+        foreignField: "_id",
+        as: "vendor"
+      }
     }
+  ]).exec(function(e, p) {
+    console.log(p);
   });
 });
 
@@ -256,6 +286,18 @@ router.post("/search", function(req, res) {
     if (err) {
       console.log(err);
     } else {
+      for (var i = 0; i < prod.length; i++) {
+        // console.log(prod[i].userid);
+        User.findById(prod[i].userid, function(e, vd) {
+          if (e) {
+          } else {
+            if (vd) {
+              prod[i].vrating = vd.rating;
+              prod[i].vname = vd.username;
+            }
+          }
+        });
+      }
       res.json(prod);
     }
   });

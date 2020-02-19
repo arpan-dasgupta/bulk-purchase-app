@@ -1,4 +1,3 @@
-const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 const mongoose = require("mongoose");
 
 let Product = new mongoose.Schema({
@@ -18,13 +17,12 @@ let Product = new mongoose.Schema({
     type: String
   },
   userid: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: "User"
   },
   image: {
     type: String
   }
 });
-
-Product.plugin(mongoose_fuzzy_searching, { fields: ["productname", "price"] });
 
 module.exports = mongoose.model("Product", Product);
