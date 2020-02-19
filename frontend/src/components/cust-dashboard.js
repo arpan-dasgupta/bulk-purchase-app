@@ -1,12 +1,46 @@
 import React, { Component } from "react";
 import axios from "axios";
+
+import {
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem
+} from "mdbreact";
 import { MDBCol, MDBIcon } from "mdbreact";
 
 export default class Cdashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = { prods: [], search: "" };
+    this.state = {
+      prods: [],
+      search: "",
+      sort_by: (a, b) => a.price - b.price
+    };
     this.onChangeSearch = this.onChangeSearch.bind(this);
+    this.sortPrice = this.sortPrice.bind(this);
+    this.sortQuant = this.sortQuant.bind(this);
+    this.sortVend = this.sortVend.bind(this);
+  }
+
+  sortPrice(e) {
+    // prods.sort();
+    this.setState({ sort_by: (a, b) => a.price - b.price });
+  }
+  sortQuant(e) {
+    console.log("ok");
+    // prods.sort();
+    this.setState({ sort_by: (a, b) => a.quantity - b.quantity });
+  }
+  sortVend(e) {
+    // prods.sort();
+    this.setState({
+      sort_by: (a, b) =>
+        (a.userid.num_rating === 0
+          ? 0
+          : a.userid.rating / a.userid.num_rating) -
+        (b.userid.num_rating === 0 ? 0 : b.userid.rating / b.userid.num_rating)
+    });
   }
 
   onChangeSearch(e) {
@@ -75,6 +109,22 @@ export default class Cdashboard extends Component {
             />
           </div>
         </MDBCol>
+        <MDBDropdown>
+          <MDBDropdownToggle caret color="primary">
+            Sort Options
+          </MDBDropdownToggle>
+          <MDBDropdownMenu basic>
+            <MDBDropdownItem onClick={this.sortPrice}>
+              Sort by Price
+            </MDBDropdownItem>
+            <MDBDropdownItem onClick={this.sortVend}>
+              Sort by Vendor Rating
+            </MDBDropdownItem>
+            <MDBDropdownItem onClick={this.sortQuant}>
+              Sort by Quantity Remaining
+            </MDBDropdownItem>
+          </MDBDropdownMenu>
+        </MDBDropdown>
         <table className="table table-striped">
           <thead>
             <tr>
@@ -88,7 +138,7 @@ export default class Cdashboard extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.prods.map((currentProd, i) => {
+            {this.state.prods.sort(this.state.sort_by).map((currentProd, i) => {
               return (
                 <tr>
                   <td>{currentProd.productname}</td>
