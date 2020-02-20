@@ -85,22 +85,22 @@ export default class MyOrders extends Component {
     console.log(e.target.value);
     // e.preventDefault();
 
-    // const newProd = {
-    //   pid: e.target.value,
-    //   quantity: va,
-    //   cid: localStorage.getItem("id_hash")
-    // };
+    const newProd = {
+      oid: e.target.value,
+      rating: va,
+      cid: localStorage.getItem("id_hash")
+    };
 
-    // axios
-    //   .post("http://localhost:4000/user/place_order", newProd)
-    //   .then(res => {
-    //     alert("Ordered Successfully");
-    //   })
-    //   .catch(res => {
-    //     // console.log(res);
-    //     alert("Invalid quantity");
-    //     // console.log("no");
-    //   });
+    axios
+      .post("http://localhost:4000/user/rate_order", newProd)
+      .then(res => {
+        alert("Rated Successfully");
+      })
+      .catch(res => {
+        // console.log(res);
+        alert("Invalid rating / Already rated");
+        // console.log("no");
+      });
   }
 
   onReview(e) {
@@ -372,33 +372,6 @@ export default class MyOrders extends Component {
                         width="50%"
                         height="50%"
                       ></img>
-                    </td>
-                    <td>
-                      <Button
-                        onClick={this.onRate}
-                        value={currentOrd._id}
-                        type="submit"
-                      >
-                        Rate
-                      </Button>
-                    </td>
-                    <td>
-                      <Button
-                        onClick={this.onReview}
-                        value={currentOrd._id}
-                        type="submit"
-                      >
-                        Review
-                      </Button>
-                    </td>
-                    <td>
-                      <Button
-                        onClick={this.onRateVen}
-                        value={currentOrd.productid.userid}
-                        type="submit"
-                      >
-                        Rate Vendor
-                      </Button>
                     </td>
                   </tr>
                 );

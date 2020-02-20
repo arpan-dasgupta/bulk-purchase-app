@@ -186,7 +186,9 @@ router.post("/:vid/add_item", function(req, res) {
     price: req.body.price,
     userid: vid,
     image: req.body.image,
-    status: "Waiting"
+    status: "Waiting",
+    rating: 0,
+    num_rating: 0
   });
   prod
     .save()
@@ -362,6 +364,7 @@ router.post("/place_order", function(req, res) {
                 reviewed: false,
                 quantity: req.body.quantity,
                 rating: 0,
+                num_rating: 0,
                 review: ""
               });
               ord
@@ -676,6 +679,53 @@ router.post("/rate_vendor", function(req, res) {
             }
           }
         });
+      }
+    }
+  });
+});
+
+router.post("/rate_order", function(req, res) {
+  req.body.rating = parseFloat(req.body.rating);
+  console.log(req.body.rating);
+  if (req.body.rating > 5 || req.body.rating < 0) {
+    res.status(403).json();
+    return;
+  }
+  Order.findById(req.body.oid, function(err, rte) {
+    if (err) {
+      res.status(400).send("Error");
+    } else {
+      if (rte.rated === false) {
+        console.log("here");
+        Product.findById(rte.productid, function(e, r) {
+          if (e) {
+            res.status(403).json();
+          } else {
+            if (r == null) res.status(403).json();
+            else {
+              Product.findByIdAndUpdate(
+                rte.productid,
+                {
+                  rating: parseFloat(r.rating) + parseFloat(req.body.rating),
+                  num_rating: parseFloat(r.num_rating) + 1
+                },
+                function(ee, rr) {
+                  Order.findByIdAndUpdate(
+                    req.body.oid,
+                    { rated: true },
+                    function(eee, rrr) {
+                      console.log("here");
+                    }
+                  );
+                }
+              );
+            }
+          }
+        });
+        res.status(200).json({ Rating: "Rating added successfully" });
+      } else {
+        // console.log(rte.rating, req.body.rating);
+        res.status(403).json();
       }
     }
   });

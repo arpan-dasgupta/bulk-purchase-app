@@ -23,6 +23,12 @@ let Product = new mongoose.Schema({
   },
   image: {
     type: String
+  },
+  rating: {
+    type: Number
+  },
+  num_rating: {
+    type: Number
   }
 });
 
