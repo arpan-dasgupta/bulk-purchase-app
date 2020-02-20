@@ -3,6 +3,7 @@ let router = require("express").Router();
 let User = require("../../models/User");
 let Product = require("../../models/Product");
 let Order = require("../../models/Order");
+let VRating = require("../../models/VRating");
 const keys = require("../../config/key");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -37,7 +38,7 @@ router.post("/register", (req, res) => {
         email: req.body.email,
         password: req.body.password,
         user_type: req.body.user_type,
-        rating: 0.0,
+        rating: 0,
         review: [],
         num_rating: 0
       }); // Hash password before saving in database
@@ -139,6 +140,27 @@ router.get("/orders", function(req, res) {
       console.log(err);
     } else {
       res.json(ord);
+    }
+  });
+});
+
+router.get("/vrat", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  VRating.find({}, function(err, ord) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(ord);
+    }
+  });
+});
+
+router.post("/vratdelete", (req, res) => {
+  VRating.deleteMany(function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(users);
     }
   });
 });
@@ -551,32 +573,110 @@ router.post("/edit_order", function(req, res) {
 
 //TODO: fix review and rate
 
-router.post("/rate", function(req, res) {
-  Order.findById(req.body.oid, function(err, ord) {
+router.post("/rate_vendor", function(req, res) {
+  // Order.findById(req.body.oid, function(err, ord) {
+  //   if (err) {
+  //     res.status(400).send("Error");
+  //   } else {
+  //     Product.findById(ord.productid, function(err, prod) {
+  //       if (err) {
+  //         res.status(400).send("Error");
+  //       } else {
+  //         User.findByIdAndUpdate(
+  //           prod.userid,
+  //           {
+  //             num_rating: num_rating + 1,
+  //             rating: (rating + req.body.rating) / num_rating
+  //           },
+  //           function(err, user) {
+  //             if (err) {
+  //               res.status(400).send("Error");
+  //             } else {
+  //               Order.findByIdAndUpdate(req.body.oid, { rated: true });
+  //               res.status(200).send("Successfully rated");
+  //             }
+  //           }
+  //         );
+  //       }
+  //     });
+  //   }
+  // });
+  req.body.rating = parseFloat(req.body.rating);
+  console.log(req.body.rating);
+  if (req.body.rating > 5 || req.body.rating < 0) {
+    res.status(403).json();
+    return;
+  }
+  VRating.findOne({ v_id: req.body.vid, c_id: req.body.cid }, function(
+    err,
+    rte
+  ) {
     if (err) {
       res.status(400).send("Error");
     } else {
-      Product.findById(ord.productid, function(err, prod) {
-        if (err) {
-          res.status(400).send("Error");
-        } else {
-          User.findByIdAndUpdate(
-            prod.userid,
-            {
-              num_rating: num_rating + 1,
-              rating: (rating + req.body.rating) / num_rating
-            },
-            function(err, user) {
-              if (err) {
-                res.status(400).send("Error");
+      if (rte == null) {
+        // console.log("here");
+        let rat = new VRating({
+          c_id: req.body.cid,
+          v_id: req.body.vid,
+          rating: req.body.rating
+        });
+        rat
+          .save()
+          .then(prod => {
+            User.findById(req.body.vid, function(e, r) {
+              if (e) {
+                res.status(403).json();
               } else {
-                Order.findByIdAndUpdate(req.body.oid, { rated: true });
-                res.status(200).send("Successfully rated");
+                if (r == null) res.status(403).json();
+                else {
+                  User.findByIdAndUpdate(
+                    req.body.vid,
+                    {
+                      rating:
+                        parseFloat(r.rating) + parseFloat(req.body.rating),
+                      num_rating: parseFloat(r.num_rating) + 1
+                    },
+                    function(ee, rr) {}
+                  );
+                }
               }
+            });
+            res.status(200).json({ Rating: "Rating added successfully" });
+          })
+          .catch(err => {
+            res.status(400).send("Error");
+          });
+      } else {
+        // console.log(rte.rating, req.body.rating);
+        User.findById(rte.v_id, function(e, r) {
+          if (e) {
+            res.status(403).json();
+          } else {
+            // console.log(rte.rating, req.body.rating);
+            if (r == null) res.status(403).json();
+            else {
+              // console.log(rte.rating, req.body.rating);
+              User.findByIdAndUpdate(
+                rte.v_id,
+                {
+                  rating:
+                    parseFloat(r.rating) -
+                    parseFloat(rte.rating) +
+                    parseFloat(req.body.rating)
+                },
+                function(ee, rr) {}
+              );
+              VRating.findOneAndUpdate(
+                { v_id: req.body.vid, c_id: req.body.cid },
+                { rating: parseFloat(req.body.rating) },
+                function(eewe, uydg) {}
+              );
+              res.status(200).json({ Rating: "Rating added successfully" });
             }
-          );
-        }
-      });
+          }
+        });
+      }
     }
   });
 });

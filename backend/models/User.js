@@ -14,7 +14,8 @@ let User = new mongoose.Schema({
     required: true
   },
   email: {
-    type: String
+    type: String,
+    required: true
   },
   rating: {
     type: Number

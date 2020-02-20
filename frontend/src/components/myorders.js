@@ -61,22 +61,22 @@ export default class MyOrders extends Component {
     console.log(e.target.value);
     // e.preventDefault();
 
-    // const newProd = {
-    //   pid: e.target.value,
-    //   quantity: va,
-    //   cid: localStorage.getItem("id_hash")
-    // };
+    const newProd = {
+      vid: e.target.value,
+      rating: va,
+      cid: localStorage.getItem("id_hash")
+    };
 
-    // axios
-    //   .post("http://localhost:4000/user/place_order", newProd)
-    //   .then(res => {
-    //     alert("Ordered Successfully");
-    //   })
-    //   .catch(res => {
-    //     // console.log(res);
-    //     alert("Invalid quantity");
-    //     // console.log("no");
-    //   });
+    axios
+      .post("http://localhost:4000/user/rate_vendor", newProd)
+      .then(res => {
+        alert("Rated Successfully");
+      })
+      .catch(res => {
+        // console.log(res);
+        alert("Invalid rating");
+        // console.log("no");
+      });
   }
 
   onRate(e) {
@@ -258,7 +258,7 @@ export default class MyOrders extends Component {
                     <td>
                       <Button
                         onClick={this.onRateVen}
-                        value={currentOrd._id}
+                        value={currentOrd.productid.userid}
                         type="submit"
                       >
                         Rate Vendor
@@ -327,7 +327,7 @@ export default class MyOrders extends Component {
                     <td>
                       <Button
                         onClick={this.onRateVen}
-                        value={currentOrd._id}
+                        value={currentOrd.productid.userid}
                         type="submit"
                       >
                         Rate Vendor
@@ -394,7 +394,7 @@ export default class MyOrders extends Component {
                     <td>
                       <Button
                         onClick={this.onRateVen}
-                        value={currentOrd._id}
+                        value={currentOrd.productid.userid}
                         type="submit"
                       >
                         Rate Vendor

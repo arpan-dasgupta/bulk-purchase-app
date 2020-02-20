@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 let Order = new mongoose.Schema({
   productid: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Product"
+    ref: "Product",
+    required: true
   },
   userid: {
-    type: String
+    type: String,
+    required: true
   },
   rated: {
     type: Boolean
@@ -19,6 +21,9 @@ let Order = new mongoose.Schema({
     type: Number
   },
   rating: {
+    type: Number
+  },
+  num_rating: {
     type: Number
   },
   review: {
