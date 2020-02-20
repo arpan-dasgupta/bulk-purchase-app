@@ -388,6 +388,134 @@ router.post("/place_order", function(req, res) {
   });
 });
 
+router.post("/edit_order", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  if (req.body.quantity < 0) res.status(403).json();
+
+  User.findOne({ _id: req.body.cid, user_type: 2 }, function(err, users) {
+    if (err) {
+      console.log(err);
+      res.status(403).json();
+    } else {
+      // console.log(users);
+      if (users === null) {
+        res.status(403).json();
+        return;
+      } else {
+        Order.findById(req.body.oid, function(e, ord) {
+          if (e) console.log(err);
+          else {
+            if (ord == null) res.status(403).json();
+            else if (ord.quantity == req.body.quantity) {
+              res.status(403).json();
+            } else {
+              console.log("here 1");
+              Product.findOne(
+                { _id: ord.productid, status: { $in: ["Waiting", "Ready"] } },
+                function(rr, pp) {
+                  if (rr) {
+                    console.log("no");
+                    res.status(403).json();
+                  } else {
+                    console.log("here 2");
+                    // console.log(pp.quantity);
+                    // console.log(ord.quantity);
+                    // console.log(req.body.quantity);
+                    if (pp == null) res.status(403).json();
+                    else if (ord.quantity > req.body.quantity) {
+                      console.log("here 3");
+                      var x = ord.quantity + pp.quantity - req.body.quantity;
+                      if (pp.quantity == 0) {
+                        Product.findByIdAndUpdate(
+                          pp._id,
+                          { quantity: x, status: "Waiting" },
+                          function(rte, y) {
+                            if (rte) console.log(rte);
+                            else console.log("yay");
+                          }
+                        );
+                      } else {
+                        Product.findByIdAndUpdate(
+                          pp._id,
+                          { quantity: x },
+                          function(rte, y) {
+                            if (rte) console.log(rte);
+                            else console.log("yay");
+                          }
+                        );
+                      }
+                      Order.findByIdAndUpdate(
+                        ord._id,
+                        {
+                          quantity: req.body.quantity
+                        },
+                        function(rte, y) {
+                          if (rte) console.log(rte);
+                          else console.log("yay");
+                        }
+                      );
+                      res.status(200).json();
+                    } else {
+                      if (ord.quantity + pp.quantity > req.body.quantity) {
+                        var x = ord.quantity + pp.quantity - req.body.quantity;
+                        Product.findByIdAndUpdate(
+                          pp._id,
+                          { quantity: x },
+                          function(rte, y) {
+                            if (rte) console.log(rte);
+                            else console.log("yay");
+                          }
+                        );
+                        Order.findByIdAndUpdate(
+                          ord._id,
+                          {
+                            quantity: req.body.quantity
+                          },
+                          function(rte, y) {
+                            if (rte) console.log(rte);
+                            else console.log("yay");
+                          }
+                        );
+                        res.status(200).json();
+                      } else if (
+                        ord.quantity + pp.quantity ==
+                        req.body.quantity
+                      ) {
+                        var x = ord.quantity + pp.quantity - req.body.quantity;
+                        Product.findByIdAndUpdate(
+                          pp._id,
+                          { quantity: x, status: "Ready" },
+                          function(rte, y) {
+                            if (rte) console.log(rte);
+                            else console.log("yay");
+                          }
+                        );
+                        Order.findByIdAndUpdate(
+                          ord._id,
+                          {
+                            quantity: req.body.quantity
+                          },
+                          function(rte, y) {
+                            if (rte) console.log(rte);
+                            else console.log("yay");
+                          }
+                        );
+                        res.status(200).json();
+                      } else {
+                        res.status(403).json();
+                      }
+                    }
+                  }
+                }
+              );
+            }
+          }
+        });
+      }
+    }
+  });
+});
+
 router.get("/:vid/order_stats", function(req, res) {
   // Product.mongoose_fuzzy_searching();
   Order.find({ userid: req.params.vid })

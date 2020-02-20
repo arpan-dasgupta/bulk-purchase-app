@@ -22,15 +22,14 @@ export default class MyOrders extends Component {
     // this.onChangeSearch = this.onChangeSearch.bind(this);
     this.sortPrice = this.sortPrice.bind(this);
     this.sortQuant = this.sortQuant.bind(this);
-    this.onOrder = this.onOrder.bind(this);
+    this.onEdit = this.onEdit.bind(this);
+    this.onRate = this.onRate.bind(this);
+    this.onReview = this.onReview.bind(this);
   }
   sortPrice(e) {
-    // prods.sort();
     this.setState({ sort_by: (a, b) => a.productid.price - b.productid.price });
   }
   sortQuant(e) {
-    // console.log("ok");
-    // prods.sort();
     this.setState({ sort_by: (a, b) => a.quantity - b.quantity });
   }
   //   onChangeSearch(e) {
@@ -62,7 +61,57 @@ export default class MyOrders extends Component {
   // }
   //   }
 
-  onOrder(e) {
+  onEdit(e) {
+    const va = prompt("Number of items?");
+    console.log(va);
+    console.log(e.target.value);
+    // console.log(e.target.value[0]);
+    // console.log(e.target.value[1]);
+    // e.preventDefault();
+
+    const newProd = {
+      oid: e.target.value,
+      quantity: va,
+      cid: localStorage.getItem("id_hash")
+    };
+
+    axios
+      .post("http://localhost:4000/user/edit_order", newProd)
+      .then(res => {
+        alert("Updated Successfully");
+      })
+      .catch(res => {
+        // console.log(res);
+        alert("Invalid quantity");
+        // console.log("no");
+      });
+  }
+
+  onRate(e) {
+    const va = prompt("Number of items?");
+    console.log(va);
+    console.log(e.target.value);
+    // e.preventDefault();
+
+    const newProd = {
+      pid: e.target.value,
+      quantity: va,
+      cid: localStorage.getItem("id_hash")
+    };
+
+    axios
+      .post("http://localhost:4000/user/place_order", newProd)
+      .then(res => {
+        alert("Ordered Successfully");
+      })
+      .catch(res => {
+        // console.log(res);
+        alert("Invalid quantity");
+        // console.log("no");
+      });
+  }
+
+  onReview(e) {
     const va = prompt("Number of items?");
     console.log(va);
     console.log(e.target.value);
@@ -176,7 +225,7 @@ export default class MyOrders extends Component {
                     </td>
                     <td>
                       <Button
-                        onClick={this.onOrder}
+                        onClick={this.onEdit}
                         value={currentOrd._id}
                         type="submit"
                       >
@@ -185,7 +234,7 @@ export default class MyOrders extends Component {
                     </td>
                     <td>
                       <Button
-                        onClick={this.onOrder}
+                        onClick={this.onRate}
                         value={currentOrd._id}
                         type="submit"
                       >
@@ -194,7 +243,7 @@ export default class MyOrders extends Component {
                     </td>
                     <td>
                       <Button
-                        onClick={this.onOrder}
+                        onClick={this.onReview}
                         value={currentOrd._id}
                         type="submit"
                       >
