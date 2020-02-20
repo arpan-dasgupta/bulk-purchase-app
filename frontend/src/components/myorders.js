@@ -6,10 +6,8 @@ import {
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBInput
+  MDBDropdownItem
 } from "mdbreact";
-import { MDBCol, MDBIcon } from "mdbreact";
 
 export default class MyOrders extends Component {
   constructor(props) {
@@ -24,6 +22,7 @@ export default class MyOrders extends Component {
     this.sortQuant = this.sortQuant.bind(this);
     this.onEdit = this.onEdit.bind(this);
     this.onRate = this.onRate.bind(this);
+    this.onRateVen = this.onRateVen.bind(this);
     this.onReview = this.onReview.bind(this);
   }
   sortPrice(e) {
@@ -32,42 +31,10 @@ export default class MyOrders extends Component {
   sortQuant(e) {
     this.setState({ sort_by: (a, b) => a.quantity - b.quantity });
   }
-  //   onChangeSearch(e) {
-  // const val = e.target.value;
-  // // e.preventDefault();
-  // this.setState({ search: val });
-  // // console.log(this.state.search);
-  // const search = {
-  //   productname: val
-  // };
-  // if (val === "") {
-  //   axios
-  //     .get("http://localhost:4000/user/all_prods")
-  //     .then(response => {
-  //       this.setState({ prods: response.data });
-  //     })
-  //     .catch(function(error) {
-  //       console.log(error);
-  //     });
-  // } else {
-  //   axios
-  //     .post("http://localhost:4000/user/search", search)
-  //     .then(response => {
-  //       this.setState({ prods: response.data });
-  //     })
-  //     .catch(function(error) {
-  //       console.log(error);
-  //     });
-  // }
-  //   }
-
   onEdit(e) {
     const va = prompt("Number of items?");
     console.log(va);
     console.log(e.target.value);
-    // console.log(e.target.value[0]);
-    // console.log(e.target.value[1]);
-    // e.preventDefault();
 
     const newProd = {
       oid: e.target.value,
@@ -88,28 +55,52 @@ export default class MyOrders extends Component {
       });
   }
 
-  onRate(e) {
-    const va = prompt("Number of items?");
+  onRateVen(e) {
+    const va = prompt("Enter rating (1-5) ");
     console.log(va);
     console.log(e.target.value);
     // e.preventDefault();
 
-    const newProd = {
-      pid: e.target.value,
-      quantity: va,
-      cid: localStorage.getItem("id_hash")
-    };
+    // const newProd = {
+    //   pid: e.target.value,
+    //   quantity: va,
+    //   cid: localStorage.getItem("id_hash")
+    // };
 
-    axios
-      .post("http://localhost:4000/user/place_order", newProd)
-      .then(res => {
-        alert("Ordered Successfully");
-      })
-      .catch(res => {
-        // console.log(res);
-        alert("Invalid quantity");
-        // console.log("no");
-      });
+    // axios
+    //   .post("http://localhost:4000/user/place_order", newProd)
+    //   .then(res => {
+    //     alert("Ordered Successfully");
+    //   })
+    //   .catch(res => {
+    //     // console.log(res);
+    //     alert("Invalid quantity");
+    //     // console.log("no");
+    //   });
+  }
+
+  onRate(e) {
+    const va = prompt("Enter rating (1-5) ");
+    console.log(va);
+    console.log(e.target.value);
+    // e.preventDefault();
+
+    // const newProd = {
+    //   pid: e.target.value,
+    //   quantity: va,
+    //   cid: localStorage.getItem("id_hash")
+    // };
+
+    // axios
+    //   .post("http://localhost:4000/user/place_order", newProd)
+    //   .then(res => {
+    //     alert("Ordered Successfully");
+    //   })
+    //   .catch(res => {
+    //     // console.log(res);
+    //     alert("Invalid quantity");
+    //     // console.log("no");
+    //   });
   }
 
   onReview(e) {
@@ -266,11 +257,11 @@ export default class MyOrders extends Component {
                     </td>
                     <td>
                       <Button
-                        onClick={this.onRate}
+                        onClick={this.onRateVen}
                         value={currentOrd._id}
                         type="submit"
                       >
-                        Rate
+                        Rate Vendor
                       </Button>
                     </td>
                   </tr>
@@ -333,6 +324,15 @@ export default class MyOrders extends Component {
                         Review
                       </Button>
                     </td>
+                    <td>
+                      <Button
+                        onClick={this.onRateVen}
+                        value={currentOrd._id}
+                        type="submit"
+                      >
+                        Rate Vendor
+                      </Button>
+                    </td>
                   </tr>
                 );
               })}
@@ -389,6 +389,15 @@ export default class MyOrders extends Component {
                         type="submit"
                       >
                         Review
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={this.onRateVen}
+                        value={currentOrd._id}
+                        type="submit"
+                      >
+                        Rate Vendor
                       </Button>
                     </td>
                   </tr>
