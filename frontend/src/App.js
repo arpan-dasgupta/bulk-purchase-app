@@ -6,11 +6,11 @@ import UsersList from "./components/users-list";
 import Login from "./components/login";
 import Register from "./components/register";
 import Dashboard from "./components/dashboard";
-import Navbar, { VendorNavbar, CustomerNavbar } from "./components/navbar";
+import MyNavbar, { VendorNavbar, CustomerNavbar } from "./components/navbar";
 import ProductForm from "./components/vproduct-add";
 import MyProds from "./components/vproduct-list";
 import ReadyProds from "./components/ready-list";
-import DispProds from "./components/dipatched-list";
+import DispProds from "./components/dispatched-list";
 import MyOrders from "./components/myorders";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
     nb = <CustomerNavbar></CustomerNavbar>;
   else if (localStorage.getItem("type") === "1")
     nb = <VendorNavbar></VendorNavbar>;
-  else nb = <Navbar></Navbar>;
+  else nb = <MyNavbar></MyNavbar>;
   return (
     <Router>
       <div className="container">

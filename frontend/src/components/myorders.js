@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Form, Button } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 
 import {
   MDBDropdown,
@@ -173,7 +173,7 @@ export default class MyOrders extends Component {
         </MDBDropdown>
         <br></br>
         <h4>Waiting Products</h4>
-        <table className="table table-striped">
+        <Table variant="dark" className="table table-striped">
           <thead>
             <tr>
               <th>Product Name</th>
@@ -219,10 +219,10 @@ export default class MyOrders extends Component {
                 );
               })}
           </tbody>
-          <br></br>
-          <h4>Ready Products</h4>
-        </table>
-        <table className="table table-striped">
+        </Table>
+        <br></br>
+        <h4>Ready Products</h4>
+        <Table variant="dark" className="table table-striped">
           <thead>
             <tr>
               <th>Product Name</th>
@@ -277,10 +277,10 @@ export default class MyOrders extends Component {
                 );
               })}
           </tbody>
-        </table>
+        </Table>
         <br></br>
         <h4>Dispatched Products</h4>
-        <table className="table table-striped">
+        <Table variant="dark" className="table table-striped">
           <thead>
             <tr>
               <th>Product Name</th>
@@ -337,10 +337,10 @@ export default class MyOrders extends Component {
                 );
               })}
           </tbody>
-        </table>
+        </Table>
         <br></br>
         <h4>Cancelled Products</h4>
-        <table className="table table-striped">
+        <Table variant="dark" className="table table-striped">
           <thead>
             <tr>
               <th>Product Name</th>
@@ -395,7 +395,7 @@ export default class MyOrders extends Component {
                 );
               })}
           </tbody>
-        </table>
+        </Table>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Form, Button } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 
 import {
   MDBDropdown,
@@ -24,6 +24,7 @@ export default class Cdashboard extends Component {
     this.sortQuant = this.sortQuant.bind(this);
     this.sortVend = this.sortVend.bind(this);
     this.onOrder = this.onOrder.bind(this);
+    this.visitVendor = this.visitVendor.bind(this);
   }
   sortPrice(e) {
     // prods.sort();
@@ -44,7 +45,9 @@ export default class Cdashboard extends Component {
         (b.userid.num_rating === 0 ? 0 : b.userid.rating / b.userid.num_rating)
     });
   }
-
+  visitVendor(e) {
+    console.log(e.target.value);
+  }
   onChangeSearch(e) {
     const val = e.target.value;
     // e.preventDefault();
@@ -152,7 +155,7 @@ export default class Cdashboard extends Component {
             </MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>
-        <table className="table table-striped">
+        <Table variant="dark" variant="dark" className="table table-striped">
           <thead>
             <tr>
               <th>Product Name</th>
@@ -178,7 +181,13 @@ export default class Cdashboard extends Component {
                     <td>{currentProd.quantity}</td>
                     <td>{currentProd.price}</td>
                     <td>{currentProd.status}</td>
-                    <td>{currentProd.userid.username}</td>
+                    <td
+                      value={currentProd.userid}
+                      onClick={this.visitVendor}
+                      color="blue"
+                    >
+                      {currentProd.userid.username}
+                    </td>
                     <td>
                       {currentProd.userid.num_rating === 0
                         ? 0
@@ -205,7 +214,7 @@ export default class Cdashboard extends Component {
                 );
               })}
           </tbody>
-        </table>
+        </Table>
       </div>
     );
   }

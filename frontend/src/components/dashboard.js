@@ -12,7 +12,7 @@ export default class Dashboard extends Component {
       return (
         <div>
           {/* <Navbar></Navbar> */}
-          Vendor
+          {/* Vendor */}
           <Vdashboard></Vdashboard>
         </div>
       );
@@ -20,7 +20,7 @@ export default class Dashboard extends Component {
       return (
         <div>
           {/* <Navbar></Navbar> */}
-          Customer
+          {/* Customer */}
           <Cdashboard></Cdashboard>
         </div>
       );

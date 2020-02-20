@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import axios from "axios";
 import "font-awesome/css/font-awesome.min.css";
 // import Navbar from "./navbar";
@@ -55,7 +55,7 @@ export default class MyProds extends Component {
   render() {
     return (
       <div>
-        <table className="table table-striped">
+        <Table variant="dark" className="table table-striped">
           <thead>
             <tr>
               <th>Product Name</th>
@@ -98,7 +98,7 @@ export default class MyProds extends Component {
                 );
               })}
           </tbody>
-        </table>
+        </Table>
       </div>
     );
   }

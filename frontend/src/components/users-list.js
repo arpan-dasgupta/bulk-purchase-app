@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Table } from "react-bootstrap";
 
 export default class UsersList extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class UsersList extends Component {
   render() {
     return (
       <div>
-        <table className="table table-striped">
+        <Table variant="dark" className="table table-striped">
           <thead>
             <tr>
               <th>Username</th>
@@ -38,7 +39,7 @@ export default class UsersList extends Component {
               );
             })}
           </tbody>
-        </table>
+        </Table>
       </div>
     );
   }
