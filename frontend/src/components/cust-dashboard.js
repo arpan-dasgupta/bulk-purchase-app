@@ -46,7 +46,7 @@ export default class Cdashboard extends Component {
     });
   }
   visitVendor(e) {
-    console.log(e.target.value);
+    console.log(e.target);
   }
   onChangeSearch(e) {
     const val = e.target.value;
@@ -155,7 +155,7 @@ export default class Cdashboard extends Component {
             </MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>
-        <Table variant="dark" variant="dark" className="table table-striped">
+        <Table className="table table-striped">
           <thead>
             <tr>
               <th>Product Name</th>
@@ -181,12 +181,19 @@ export default class Cdashboard extends Component {
                     <td>{currentProd.quantity}</td>
                     <td>{currentProd.price}</td>
                     <td>{currentProd.status}</td>
-                    <td
-                      value={currentProd.userid}
-                      onClick={this.visitVendor}
-                      color="blue"
-                    >
-                      {currentProd.userid.username}
+                    <td>
+                      <a
+                        href="/profile"
+                        onClick={function() {
+                          localStorage.setItem(
+                            "vendor_id",
+                            currentProd.userid._id
+                          );
+                          console.log("go");
+                        }}
+                      >
+                        {currentProd.userid.username}
+                      </a>
                     </td>
                     <td>
                       {currentProd.userid.num_rating === 0
