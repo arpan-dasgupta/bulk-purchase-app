@@ -104,7 +104,7 @@ export default class MyOrders extends Component {
   }
 
   onReview(e) {
-    const va = prompt("Number of items?");
+    const va = prompt("Enter review");
     console.log(va);
     console.log(e.target.value);
     // e.preventDefault();
@@ -116,7 +116,7 @@ export default class MyOrders extends Component {
     };
 
     axios
-      .post("http://localhost:4000/user/place_order", newProd)
+      .post("http://localhost:4000/user/review_order", newProd)
       .then(res => {
         alert("Ordered Successfully");
       })
