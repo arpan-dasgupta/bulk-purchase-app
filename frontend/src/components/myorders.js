@@ -79,6 +79,7 @@ export default class MyOrders extends Component {
       .post("http://localhost:4000/user/edit_order", newProd)
       .then(res => {
         alert("Updated Successfully");
+        window.location.href = "/myorders";
       })
       .catch(res => {
         // console.log(res);
@@ -157,26 +158,6 @@ export default class MyOrders extends Component {
   render() {
     return (
       <div>
-        {/* <MDBCol md="6">
-          <div className="input-group md-form form-sm form-1 pl-0">
-            <div className="input-group-prepend">
-              <span
-                className="input-group-text purple lighten-3"
-                id="basic-text1"
-              >
-                <MDBIcon className="text-white" icon="search" />
-              </span>
-            </div>
-            <input
-              onChange={this.onChangeSearch}
-              className="form-control my-0 py-1"
-              type="text"
-              placeholder="Search for products"
-              aria-label="Search"
-              value={this.state.search}
-            />
-          </div>
-        </MDBCol> */}
         <MDBDropdown>
           <MDBDropdownToggle caret color="primary">
             Sort Options
@@ -190,6 +171,8 @@ export default class MyOrders extends Component {
             </MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>
+        <br></br>
+        <h4>Waiting Products</h4>
         <table className="table table-striped">
           <thead>
             <tr>
@@ -205,7 +188,7 @@ export default class MyOrders extends Component {
           <tbody>
             {this.state.ords
               .filter(function(v) {
-                return v.productid != null;
+                return v.productid != null && v.productid.status == "Waiting";
               })
               .sort(this.state.sort_by)
               .map((currentOrd, i) => {
@@ -231,6 +214,164 @@ export default class MyOrders extends Component {
                       >
                         Edit
                       </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+          <br></br>
+          <h4>Ready Products</h4>
+        </table>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity Left</th>
+              <th>Quantity Ordered</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Image</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.ords
+              .filter(function(v) {
+                return v.productid != null && v.productid.status == "Ready";
+              })
+              .sort(this.state.sort_by)
+              .map((currentOrd, i) => {
+                return (
+                  <tr>
+                    <td>{currentOrd.productid.productname}</td>
+                    <td>{currentOrd.productid.quantity}</td>
+                    <td>{currentOrd.quantity}</td>
+                    <td>{currentOrd.productid.price}</td>
+                    <td>{currentOrd.productid.status}</td>
+                    <td>
+                      <img
+                        src={currentOrd.image}
+                        width="50%"
+                        height="50%"
+                      ></img>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={this.onEdit}
+                        value={currentOrd._id}
+                        type="submit"
+                      >
+                        Edit
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={this.onRate}
+                        value={currentOrd._id}
+                        type="submit"
+                      >
+                        Rate
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+        <br></br>
+        <h4>Dispatched Products</h4>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity Left</th>
+              <th>Quantity Ordered</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Image</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.ords
+              .filter(function(v) {
+                return (
+                  v.productid != null && v.productid.status == "Dispatched"
+                );
+              })
+              .sort(this.state.sort_by)
+              .map((currentOrd, i) => {
+                return (
+                  <tr>
+                    <td>{currentOrd.productid.productname}</td>
+                    <td>{currentOrd.productid.quantity}</td>
+                    <td>{currentOrd.quantity}</td>
+                    <td>{currentOrd.productid.price}</td>
+                    <td>{currentOrd.productid.status}</td>
+                    <td>
+                      <img
+                        src={currentOrd.image}
+                        width="50%"
+                        height="50%"
+                      ></img>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={this.onRate}
+                        value={currentOrd._id}
+                        type="submit"
+                      >
+                        Rate
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={this.onReview}
+                        value={currentOrd._id}
+                        type="submit"
+                      >
+                        Review
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+        <br></br>
+        <h4>Cancelled Products</h4>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity Left</th>
+              <th>Quantity Ordered</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Image</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.ords
+              .filter(function(v) {
+                return v.productid != null && v.productid.status == "Cancelled";
+              })
+              .sort(this.state.sort_by)
+              .map((currentOrd, i) => {
+                return (
+                  <tr>
+                    <td>{currentOrd.productid.productname}</td>
+                    <td>{currentOrd.productid.quantity}</td>
+                    <td>{currentOrd.quantity}</td>
+                    <td>{currentOrd.productid.price}</td>
+                    <td>{currentOrd.productid.status}</td>
+                    <td>
+                      <img
+                        src={currentOrd.image}
+                        width="50%"
+                        height="50%"
+                      ></img>
                     </td>
                     <td>
                       <Button
