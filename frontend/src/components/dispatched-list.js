@@ -62,6 +62,7 @@ export default class DispProds extends Component {
               <th>Quantity Left</th>
               <th>Price</th>
               <th>Status</th>
+              <th>Rating</th>
               <th>Image</th>
               <th></th>
             </tr>
@@ -79,20 +80,16 @@ export default class DispProds extends Component {
                     <td>{currentProd.price}</td>
                     <td>{currentProd.status}</td>
                     <td>
+                      {currentProd.num_rating == 0
+                        ? 0
+                        : currentProd.rating / currentProd.num_rating}
+                    </td>
+                    <td>
                       <img
                         src={currentProd.image}
                         width="50%"
                         height="50%"
                       ></img>
-                    </td>
-                    <td>
-                      <Button
-                        type="delete"
-                        value={currentProd._id}
-                        onClick={this.onDelete}
-                      >
-                        Dispatch
-                      </Button>
                     </td>
                   </tr>
                 );

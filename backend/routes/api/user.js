@@ -133,6 +133,17 @@ router.post("/delete_orders", (req, res) => {
   });
 });
 
+router.get("/prods", function(req, res) {
+  // Product.mongoose_fuzzy_searching();
+  Product.find({}, function(err, ord) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(ord);
+    }
+  });
+});
+
 router.get("/orders", function(req, res) {
   // Product.mongoose_fuzzy_searching();
   Order.find({}, function(err, ord) {
@@ -703,6 +714,7 @@ router.post("/rate_order", function(req, res) {
           } else {
             if (r == null) res.status(403).json();
             else {
+              console.log(r.rating);
               Product.findByIdAndUpdate(
                 rte.productid,
                 {

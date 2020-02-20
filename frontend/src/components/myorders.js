@@ -110,7 +110,7 @@ export default class MyOrders extends Component {
     // e.preventDefault();
 
     const newProd = {
-      pid: e.target.value,
+      oid: e.target.value,
       quantity: va,
       cid: localStorage.getItem("id_hash")
     };
@@ -118,11 +118,11 @@ export default class MyOrders extends Component {
     axios
       .post("http://localhost:4000/user/review_order", newProd)
       .then(res => {
-        alert("Ordered Successfully");
+        alert("Reviewed Successfully");
       })
       .catch(res => {
         // console.log(res);
-        alert("Invalid quantity");
+        alert("Already Reviewed");
         // console.log("no");
       });
   }
