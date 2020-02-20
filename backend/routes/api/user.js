@@ -742,34 +742,16 @@ router.post("/review_order", function(req, res) {
     if (err) {
       res.status(400).send("Error");
     } else {
-      if (rte.rated === false) {
+      if (rte.reviewed === false) {
         console.log("here");
-        Product.findById(rte.productid, function(e, r) {
-          if (e) {
-            res.status(403).json();
-          } else {
-            if (r == null) res.status(403).json();
-            else {
-              Product.findByIdAndUpdate(
-                rte.productid,
-                {
-                  rating: parseFloat(r.rating) + parseFloat(req.body.rating),
-                  num_rating: parseFloat(r.num_rating) + 1
-                },
-                function(ee, rr) {
-                  Order.findByIdAndUpdate(
-                    req.body.oid,
-                    { rated: true },
-                    function(eee, rrr) {
-                      console.log("here");
-                    }
-                  );
-                }
-              );
-            }
+        Order.findByIdAndUpdate(
+          req.body.oid,
+          { reviewed: true, rewiew: req.body.review },
+          function(eee, rrr) {
+            console.log("here");
           }
-        });
-        res.status(200).json({ Rating: "Rating added successfully" });
+        );
+        res.status(200).json({ Review: "Review added successfully" });
       } else {
         // console.log(rte.rating, req.body.rating);
         res.status(403).json();
