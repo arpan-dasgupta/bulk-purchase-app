@@ -11,6 +11,7 @@ import ProductForm from "./components/vproduct-add";
 import MyProds from "./components/vproduct-list";
 import ReadyProds from "./components/ready-list";
 import DispProds from "./components/dipatched-list";
+import MyOrders from "./components/myorders";
 
 function App() {
   var nb;
@@ -32,6 +33,7 @@ function App() {
         <Route path="/vproductlist" component={MyProds} />
         <Route path="/readyprod" component={ReadyProds} />
         <Route path="/dispprod" component={DispProds} />
+        <Route path="/myorders" component={MyOrders} />
         {/* <Route path="/vdashboard" component={Vdashboard} /> */}
       </div>
     </Router>

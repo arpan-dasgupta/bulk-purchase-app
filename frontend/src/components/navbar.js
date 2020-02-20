@@ -28,7 +28,7 @@ export default class Navbar extends Component {
                 Users
                 </Link>
               </li> */}
-              {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
+              <NavbarItem link="/" name="Users"></NavbarItem>
               <NavbarItem link="/register" name="Register"></NavbarItem>
               <NavbarItem link="/login" name="Login"></NavbarItem>
             </ul>
@@ -50,8 +50,8 @@ export class VendorNavbar extends Component {
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
-              <NavbarItem link="/login" name="Login"></NavbarItem>
-              <NavbarItem link="/register" name="Register"></NavbarItem>
+              {/* <NavbarItem link="/login" name="Login"></NavbarItem> */}
+              {/* <NavbarItem link="/register" name="Register"></NavbarItem> */}
               <NavbarItem link="/addproduct" name="Add Product"></NavbarItem>
               <NavbarItem link="/vproductlist" name="Product List"></NavbarItem>
               <NavbarItem link="/readyprod" name="Products Ready"></NavbarItem>
@@ -91,8 +91,9 @@ export class CustomerNavbar extends Component {
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               {/* <NavbarItem link="/" name="Users"></NavbarItem> */}
-              <NavbarItem link="/login" name="Login"></NavbarItem>
-              <NavbarItem link="/register" name="Register"></NavbarItem>
+              {/* <NavbarItem link="/login" name="Login"></NavbarItem> */}
+              {/* <NavbarItem link="/register" name="Register"></NavbarItem> */}
+              <NavbarItem link="/myorders" name="My Orders"></NavbarItem>
               <li className="navbar-item">
                 <a
                   href="/login"

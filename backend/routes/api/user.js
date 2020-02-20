@@ -186,13 +186,17 @@ router.post("/:pid/cancel_item", function(req, res) {
         res.status(403).json();
         return;
       } else {
-        Product.findByIdAndDelete(req.params.pid, function(err, users) {
-          if (err) {
-            console.log(err);
-          } else {
-            res.json(users);
+        Product.findByIdAndUpdate(
+          req.params.pid,
+          { status: "Cancelled" },
+          function(err, users) {
+            if (err) {
+              console.log(err);
+            } else {
+              res.json(users);
+            }
           }
-        });
+        );
       }
     }
   });
@@ -386,13 +390,15 @@ router.post("/place_order", function(req, res) {
 
 router.get("/:vid/order_stats", function(req, res) {
   // Product.mongoose_fuzzy_searching();
-  Order.find({ userid: req.params.vid }, function(err, ord) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(ord);
-    }
-  });
+  Order.find({ userid: req.params.vid })
+    .populate("productid")
+    .exec(function(err, ord) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(ord);
+      }
+    });
 });
 
 router.post("/edit_order", function(req, res) {
