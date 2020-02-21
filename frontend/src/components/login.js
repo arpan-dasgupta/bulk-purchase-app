@@ -48,12 +48,13 @@ export default class Login extends Component {
         console.log("yo");
         localStorage.setItem("id_hash", res.data.id);
         localStorage.setItem("type", res.data.type);
-
+        alert("Successfully logged in");
         window.location.href = "/dashboard";
       })
       .catch(res => {
         console.log(res);
         console.log("no");
+        alert("No Such User");
       });
 
     // this.setState({

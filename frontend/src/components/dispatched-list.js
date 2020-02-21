@@ -7,7 +7,7 @@ import "font-awesome/css/font-awesome.min.css";
 export default class DispProds extends Component {
   constructor(props) {
     super(props);
-    this.state = { prods: [] };
+    this.state = { prods: [], reviews: [] };
     this.onDelete = this.onDelete.bind(this);
   }
 
@@ -50,6 +50,17 @@ export default class DispProds extends Component {
       .catch(function(error) {
         console.log(error);
       });
+    const newProd = { vid: localStorage.getItem("id_hash") };
+
+    axios
+      .post("http://localhost:4000/user/get_vend_reviews", newProd)
+      .then(response => {
+        console.log(response.data);
+        this.setState({ reviews: response.data });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   render() {
@@ -63,8 +74,8 @@ export default class DispProds extends Component {
               <th>Price</th>
               <th>Status</th>
               <th>Rating</th>
+              <th>Reviews</th>
               <th>Image</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -83,6 +94,22 @@ export default class DispProds extends Component {
                       {currentProd.num_rating == 0
                         ? 0
                         : currentProd.rating / currentProd.num_rating}
+                    </td>
+                    <td>
+                      {/* // currentProd.rating */}
+                      <table>
+                        {this.state.reviews
+                          .filter(function(o) {
+                            return o.productid._id === currentProd._id;
+                          })
+                          .map((co, j) => {
+                            return (
+                              <tr>
+                                <td>{co.review}</td>
+                              </tr>
+                            );
+                          })}
+                      </table>
                     </td>
                     <td>
                       <img

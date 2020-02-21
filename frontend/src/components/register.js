@@ -71,10 +71,12 @@ export default class Register extends Component {
       .then(res => {
         // console.log(res);
         console.log(res.data);
+        alert("Successfully registered");
         window.location.href = "/login";
       })
       .catch(res => {
         console.log(res);
+        alert("Invalid Fields / Incomplete fields / Passwords dont match");
       });
 
     // this.setState({
