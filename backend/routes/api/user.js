@@ -758,7 +758,7 @@ router.post("/review_order", function(req, res) {
         console.log("here");
         Order.findByIdAndUpdate(
           req.body.oid,
-          { reviewed: true, rewiew: req.body.review },
+          { reviewed: true, review: req.body.review },
           function(eee, rrr) {
             console.log("here");
           }
@@ -799,6 +799,28 @@ router.post("/review", function(req, res) {
       });
     }
   });
+});
+
+router.post("/get_vend_reviews", function(req, res) {
+  Order.find({})
+    .populate("productid")
+    .exec(function(err, prod) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(prod);
+        res.json(
+          prod.filter(function(o) {
+            return (
+              o.productid != null &&
+              o.review != "" &&
+              o.review != null &&
+              o.productid.userid == req.body.vid
+            );
+          })
+        );
+      }
+    });
 });
 
 // Export API routes

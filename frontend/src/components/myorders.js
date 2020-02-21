@@ -111,7 +111,7 @@ export default class MyOrders extends Component {
 
     const newProd = {
       oid: e.target.value,
-      quantity: va,
+      review: va,
       cid: localStorage.getItem("id_hash")
     };
 
